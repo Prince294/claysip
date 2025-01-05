@@ -137,5 +137,30 @@ const userData = async (req, res) => {
     }
 }
 
+// Route for user data
+const getUserData = async (req, res) => {
+    try {
 
-export { loginUser, registerUser, adminLogin, userData }
+        const _id = req.body.userId;
+        const user = await userModel.findOne({ _id });
+
+        if (!user) {
+            return res.json({ success: false, message: "User doesn't exists" })
+        }
+
+        const userObject = user.toObject();
+        delete userObject.cartData;
+        delete userObject._id;
+        delete userObject.password;
+
+        res.json({ success: true, data: userObject })
+
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+
+export { loginUser, registerUser, adminLogin, userData, getUserData }

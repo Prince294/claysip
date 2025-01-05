@@ -17,6 +17,7 @@ const ShopContextProvider = (props) => {
     const [filters, setFilters] = useState([]);
     const [token, setToken] = useState('')
     const [sidebar, setSidebar] = useState(false)
+    const [userData, setUserData] = useState([])
     const navigate = useNavigate();
 
 
@@ -63,8 +64,12 @@ const ShopContextProvider = (props) => {
         for (const items in cartItems) {
             for (const item in cartItems[items]) {
                 try {
-                    if (cartItems[items][item] > 0) {
-                        totalCount += cartItems[items][item];
+
+                    var product_info = products.find(e => e._id === items);
+                    if(product_info){
+                        if (cartItems[items][item] > 0) {
+                            totalCount += cartItems[items][item];
+                        }
                     }
                 } catch (error) {
 
@@ -158,12 +163,11 @@ const ShopContextProvider = (props) => {
         }
     }
 
-    const getUserProfile = async ( token ) => {
+    const getUserProfile = async () => {
         try {
-            
-            const response = await axios.post(backendUrl + '/api/cart/get',{},{headers:{token}})
+            const response = await axios.get(backendUrl + '/api/user/user-data',{headers:{token}})
             if (response.data.success) {
-                setCartItems(response.data.cartData)
+                setUserData(response.data.data)
             }
         } catch (error) {
             console.log(error)
@@ -188,6 +192,7 @@ const ShopContextProvider = (props) => {
         }
         if (token) {
             getUserCart(token)
+            getUserProfile();
         }
     }, [token])
 
@@ -197,7 +202,7 @@ const ShopContextProvider = (props) => {
         cartItems, addToCart,setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
-        setToken, token, filters, toggleSidebar, sidebar
+        setToken, token, filters, toggleSidebar, sidebar, userData
     }
 
     return (
