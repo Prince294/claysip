@@ -12,42 +12,86 @@ const Add = ({token}) => {
   const [image3,setImage3] = useState(false)
   const [image4,setImage4] = useState(false)
 
-   const [name, setName] = useState("");
-   const [description, setDescription] = useState("");
-   const [price, setPrice] = useState("");
-   const [category, setCategory] = useState("Men");
-   const [bestseller, setBestseller] = useState(false);
-   const [sizes, setSizes] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("Glasses");
+  const [bestseller, setBestseller] = useState(false);
+  const [sizes, setSizes] = useState([]);
 
-   const [productTypes, setProductTypes] = useState("0");
-   const [checkedStates, setCheckedStates] = useState([]);
+  const [productTypes, setProductTypes] = useState("0");
+  const [productTypeData, setProductTypeData] = useState([]);
 
 
-   useEffect(() => {
-      setCheckedStates(Array(parseInt(productTypes)).fill(false));
-   }, [productTypes])
+  useEffect(() => {
+    setProductTypeData(Array(parseInt(productTypes)).fill({}).map((_, index)=> ({
+        index: index + 1,
+        size_available: false, 
+        sizes: [], 
+        image1: "",
+        image2: "",
+        image3: "",
+        image4: "",
+        price: "",
+      })
+    ));
+  }, [productTypes])
    
+  const setProductTypeSize = (index, size)=>{
+    const newProductTypeData = [...productTypeData];
 
+    if(!newProductTypeData[index].sizes.includes(size)){
+      newProductTypeData[index] = {
+        ...newProductTypeData[index],
+        sizes: [...newProductTypeData[index].sizes, size],
+      };
+    } else {
+      newProductTypeData[index] = {
+        ...newProductTypeData[index],
+        sizes: newProductTypeData[index].sizes.filter( item => item !== size),
+      };
+    }
+    setProductTypeData(newProductTypeData);
+  }
 
-   const onSubmitHandler = async (e) => {
+  const setProductTypeImage = (index, image, imageUrl)=>{
+    const newProductTypeData = [...productTypeData];
+
+    newProductTypeData[index] = {
+      ...newProductTypeData[index],
+      ["image"+image]: imageUrl,
+    };
+    setProductTypeData(newProductTypeData);
+  }
+
+  const setProductTypePrice = (index, price)=>{
+    const newProductTypeData = [...productTypeData];
+
+    newProductTypeData[index] = {
+      ...newProductTypeData[index],
+      price: price,
+    };
+    setProductTypeData(newProductTypeData);
+  }
+
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     try {
       
       const formData = new FormData()
-
       formData.append("name",name)
       formData.append("description",description)
       formData.append("price",price)
       formData.append("category",category)
+      formData.append("no_of_product_types",productTypes)
+      formData.append("product_type_data",JSON.stringify(productTypeData))
       formData.append("bestseller",bestseller)
-      formData.append("sizes",JSON.stringify(sizes))
 
       image1 && formData.append("image1",image1)
       image2 && formData.append("image2",image2)
       image3 && formData.append("image3",image3)
       image4 && formData.append("image4",image4)
-
       const response = await axios.post(backendUrl + "/api/product/add",formData,{headers:{token}})
 
       if (response.data.success) {
@@ -67,7 +111,7 @@ const Add = ({token}) => {
       console.log(error);
       toast.error(error.message)
     }
-   }
+  }
 
   return (
     <form onSubmit={onSubmitHandler} className='flex flex-col w-full items-start gap-3'>
@@ -135,61 +179,64 @@ const Add = ({token}) => {
             </select>
           </div>
           <div className='flex-row gap-3 mt-3 flex-wrap'>
-            {Array.from({ length: parseInt(productTypes) }, (_, index) => (
+            {productTypeData.length == productTypes && Array.from({ length: parseInt(productTypes) }, (_, index) => (
               <>
                 Type {index + 1}:
                 <div className='flex gap-2 mb-3 flex-wrap' key={index}>
-                  <label htmlFor="image1">
-                    <img className='w-20' src={!image1 ? assets.upload_area : URL.createObjectURL(image1)} alt="" />
-                    <input onChange={(e)=>setImage1(e.target.files[0])} type="file" id="image1" hidden/>
+                  <label htmlFor={`product_type_${index}_image1`}>
+                    <img className='w-20' src={!productTypeData[index]?.image1 ? assets.upload_area : URL.createObjectURL(productTypeData[index]?.image1)} alt="" />
+                    <input onChange={(e)=>setProductTypeImage(index, 1, e.target.files[0])} type="file" id={`product_type_${index}_image1`} hidden/>
                   </label>
-                  <label htmlFor="image2">
-                    <img className='w-20' src={!image2 ? assets.upload_area : URL.createObjectURL(image2)} alt="" />
-                    <input onChange={(e)=>setImage2(e.target.files[0])} type="file" id="image2" hidden/>
+                  <label htmlFor={`product_type_${index}_image2`}>
+                    <img className='w-20' src={!productTypeData[index]?.image2 ? assets.upload_area : URL.createObjectURL(productTypeData[index]?.image2)} alt="" />
+                    <input onChange={(e)=>setProductTypeImage(index, 2, e.target.files[0])} type="file" id={`product_type_${index}_image2`} hidden/>
                   </label>
-                  <label htmlFor="image3">
-                    <img className='w-20' src={!image3 ? assets.upload_area : URL.createObjectURL(image3)} alt="" />
-                    <input onChange={(e)=>setImage3(e.target.files[0])} type="file" id="image3" hidden/>
+                  <label htmlFor={`product_type_${index}_image3`}>
+                    <img className='w-20' src={!productTypeData[index]?.image3 ? assets.upload_area : URL.createObjectURL(productTypeData[index]?.image3)} alt="" />
+                    <input onChange={(e)=>setProductTypeImage(index, 3, e.target.files[0])} type="file" id={`product_type_${index}_image3`} hidden/>
                   </label>
-                  <label htmlFor="image4">
-                    <img className='w-20' src={!image4 ? assets.upload_area : URL.createObjectURL(image4)} alt="" />
-                    <input onChange={(e)=>setImage4(e.target.files[0])} type="file" id="image4" hidden/>
+                  <label htmlFor={`product_type_${index}_image4`}>
+                    <img className='w-20' src={!productTypeData[index]?.image4 ? assets.upload_area : URL.createObjectURL(productTypeData[index]?.image4)} alt="" />
+                    <input onChange={(e)=>setProductTypeImage(index, 4, e.target.files[0])} type="file" id={`product_type_${index}_image4`} hidden/>
                   </label>
 
                   <div className='ml-4'>
                     <p className='mb-2'>Product Price</p>
-                    <input onChange={(e) => setPrice(e.target.value)} value={price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" placeholder='25' />
+                    <input onChange={(e) => setProductTypePrice(index, e.target.value)} value={productTypeData[index]?.price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" placeholder='25' />
                   </div>
 
                   <div className='flex gap-2 mt-2 items-center ml-6'>
                     <input onChange={() => {
-                      const newCheckedStates = [...checkedStates];
-                      newCheckedStates[index] = !newCheckedStates[index];
-                      setCheckedStates(newCheckedStates);
-                    }} checked={checkedStates[index]} type="checkbox" id={`is_size_available-${index}`} />
+                      const newProductTypeData = [...productTypeData];
+                      newProductTypeData[index] = {
+                        ...newProductTypeData[index],
+                        size_available: !newProductTypeData[index].size_available,
+                      };
+                      setProductTypeData(newProductTypeData);
+                    }} checked={productTypeData[index]?.size_available} type="checkbox" id={`is_size_available-${index}`} />
                     <label className='cursor-pointer' htmlFor={`is_size_available-${index}`}>Is sizes available</label>
                   </div>
 
-                  {checkedStates[index] && (
+                  {productTypeData[index]?.size_available && (
                     <div className='flex gap-2 mt-2 w-full'>
-                      <div onClick={()=>setSizes(prev => prev.includes("S") ? prev.filter( item => item !== "S") : [...prev,"S"])}>
-                        <p className={`${sizes.includes("S") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>S</p>
+                      <div onClick={()=>setProductTypeSize(index, "S")}>
+                        <p className={`${productTypeData[index].sizes.includes("S") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>S</p>
                       </div>
                       
-                      <div onClick={()=>setSizes(prev => prev.includes("M") ? prev.filter( item => item !== "M") : [...prev,"M"])}>
-                        <p className={`${sizes.includes("M") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>M</p>
+                      <div onClick={()=>setProductTypeSize(index, "M")}>
+                        <p className={`${productTypeData[index].sizes.includes("M") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>M</p>
                       </div>
 
-                      <div onClick={()=>setSizes(prev => prev.includes("L") ? prev.filter( item => item !== "L") : [...prev,"L"])}>
-                        <p className={`${sizes.includes("L") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>L</p>
+                      <div onClick={()=>setProductTypeSize(index, "L")}>
+                        <p className={`${productTypeData[index].sizes.includes("L") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>L</p>
                       </div>
 
-                      <div onClick={()=>setSizes(prev => prev.includes("XL") ? prev.filter( item => item !== "XL") : [...prev,"XL"])}>
-                        <p className={`${sizes.includes("XL") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>XL</p>
+                      <div onClick={()=>setProductTypeSize(index, "XL")}>
+                        <p className={`${productTypeData[index].sizes.includes("XL") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>XL</p>
                       </div>
 
-                      <div onClick={()=>setSizes(prev => prev.includes("XXL") ? prev.filter( item => item !== "XXL") : [...prev,"XXL"])}>
-                        <p className={`${sizes.includes("XXL") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>XXL</p>
+                      <div onClick={()=>setProductTypeSize(index, "XXL")}>
+                        <p className={`${productTypeData[index].sizes.includes("XXL") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>XXL</p>
                       </div>
                     </div>
                   )}
