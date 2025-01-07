@@ -21,11 +21,14 @@ const ShopContextProvider = (props) => {
     const navigate = useNavigate();
 
 
-    const addToCart = async (itemId, size) => {
-
-        if (!size) {
+    const addToCart = async (itemId, product_type, size, is_size_available) => {
+        if (is_size_available && size == "") {
             toast.error('Select Product Size');
             return;
+        }
+
+        if(size == ""){
+            size = "_";
         }
 
         toggleSidebar(true)
@@ -33,24 +36,45 @@ const ShopContextProvider = (props) => {
         let cartData = structuredClone(cartItems);
 
         if (cartData[itemId]) {
-            if (cartData[itemId][size]) {
-                cartData[itemId][size] += 1;
-            }
-            else {
-                cartData[itemId][size] = 1;
+            if(!product_type){
+                if(cartData[itemId]['main']){
+                    if (cartData[itemId]['main'][size]) {
+                        cartData[itemId]['main'][size] += 1;
+                    }
+                    else {
+                        cartData[itemId]['main'][size] = 1;
+                    }
+                } else {
+                    cartData[itemId] = {...cartData[itemId], 'main' : {[size] : 1}};
+                }
+            } else {
+                if(cartData[itemId][product_type.index]){
+                    if (cartData[itemId][product_type.index][size]) {
+                        cartData[itemId][product_type.index][size] += 1;
+                    }
+                    else {
+                        cartData[itemId][product_type.index][size] = 1;
+                    }
+                } else {
+                    cartData[itemId] = {...cartData[itemId], [product_type.index] : {[size] : 1}};
+                }
             }
         }
         else {
             cartData[itemId] = {};
-            cartData[itemId][size] = 1;
+            if(!product_type){
+                cartData[itemId] = {'main' : {[size] : 1}};
+            } else {
+                cartData[itemId] = {[product_type.index] : {[size] : 1}};
+            }
         }
         setCartItems(cartData);
 
         if (token) {
             try {
 
-                await axios.post(backendUrl + '/api/cart/add', { itemId, size }, { headers: { token } })
-
+                await axios.post(backendUrl + '/api/cart/add', { itemId, product_type, size }, { headers: { token } })
+                getUserCart(token);
             } catch (error) {
                 console.log(error)
                 toast.error(error.message)
@@ -59,39 +83,87 @@ const ShopContextProvider = (props) => {
 
     }
 
+    const gettingInformationFromCartData = async (cartItem) => {
+        return new Promise((resolve, reject)=>{
+            const tempData = [];
+            for (const items in cartItem) {
+                for (const item in cartItem[items]) {
+                    if (item !== 'main') {
+                        for (const size in cartItem[items][item]) {
+                            if (cartItem[items][item][size] > 0) {
+
+                                var product_info = products.find(e => e._id === items);
+                                if (product_info) {
+                                    tempData.push({
+                                        _id: items,
+                                        size: size,
+                                        quantity: cartItem[items][item][size],
+                                        name: product_info.name,
+                                        description: product_info.description,
+                                        ...product_info.product_type_data[item]
+                                    });
+                                }
+                            }
+                        }
+                    } else {
+                        for (const size in cartItem[items][item]) {
+                            if (cartItem[items][item][size] > 0) {
+
+                                var product_info = products.find(e => e._id === items);
+                                if (product_info) {
+                                    tempData.push({
+                                        _id: items,
+                                        size: size,
+                                        quantity: cartItem[items][item][size],
+                                        ...product_info
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            resolve(tempData);
+        })
+    }
+
     const getCartCount = () => {
         let totalCount = 0;
         for (const items in cartItems) {
             for (const item in cartItems[items]) {
-                try {
-
-                    var product_info = products.find(e => e._id === items);
-                    if(product_info){
-                        if (cartItems[items][item] > 0) {
-                            totalCount += cartItems[items][item];
+                for (const size in cartItems[items][item]) {
+                    try {
+                        
+                        var product_info = products.find(e => e._id === items);
+                        if(product_info){
+                            if (cartItems[items][item][size] > 0) {
+                                totalCount += cartItems[items][item][size];
+                            }
                         }
+                    } catch (error) {
+                        
                     }
-                } catch (error) {
-
                 }
             }
         }
         return totalCount;
     }
 
-    const updateQuantity = async (itemId, size, quantity) => {
-
+    const updateQuantity = async (itemId, product_type, size, quantity) => {
         let cartData = structuredClone(cartItems);
 
-        cartData[itemId][size] = quantity;
+        if(!product_type){
+            product_type = "main";
+        }
+        cartData[itemId][product_type][size] = quantity;
 
         setCartItems(cartData)
 
         if (token) {
             try {
 
-                await axios.post(backendUrl + '/api/cart/update', { itemId, size, quantity }, { headers: { token } })
-
+                await axios.post(backendUrl + '/api/cart/update', { itemId, product_type, size, quantity }, { headers: { token } })
+                getUserCart(token);
             } catch (error) {
                 console.log(error)
                 toast.error(error.message)
@@ -105,12 +177,26 @@ const ShopContextProvider = (props) => {
         for (const items in cartItems) {
             let itemInfo = products.find((product) => product._id === items);
             for (const item in cartItems[items]) {
-                try {
-                    if (cartItems[items][item] > 0) {
-                        totalAmount += itemInfo.price * cartItems[items][item];
+                if(item != 'main'){
+                    for (const size in cartItems[items][item]) {
+                        try {
+                            if (cartItems[items][item][size] > 0) {
+                                totalAmount += itemInfo.product_type_data[item].price * cartItems[items][item][size];
+                            }
+                        } catch (error) {
+                            
+                        }
                     }
-                } catch (error) {
-
+                } else {
+                    for (const size in cartItems[items][item]) {
+                        try {
+                            if (cartItems[items][item][size] > 0) {
+                                totalAmount += itemInfo.price * cartItems[items][item][size];
+                            }
+                        } catch (error) {
+                            
+                        }
+                    }
                 }
             }
         }
@@ -202,7 +288,7 @@ const ShopContextProvider = (props) => {
         cartItems, addToCart,setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
-        setToken, token, filters, toggleSidebar, sidebar, userData
+        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData
     }
 
     return (

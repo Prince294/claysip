@@ -10,6 +10,7 @@ const Product = () => {
   const { products, currency ,addToCart } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('')
+  const [productType,setProductType] = useState('')
   const [size,setSize] = useState('')
 
   const fetchProductData = async () => {
@@ -17,7 +18,7 @@ const Product = () => {
     products.map((item) => {
       if (item._id === productId) {
         setProductData(item)
-        setImage(item.image[0])
+        setImage(item.image.length ? item.image[0] : assets?.logo)
         return null;
       }
     })
@@ -28,6 +29,10 @@ const Product = () => {
     fetchProductData();
   }, [productId,products])
 
+  useEffect(() => {
+    setSize("");
+  }, [productType])
+
   return productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
       {/*----------- Product Data-------------- */}
@@ -35,14 +40,39 @@ const Product = () => {
 
         {/*---------- Product Images------------- */}
         <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
-          <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full'>
-              {
-                productData.image.map((item,index)=>(
-                  <img onClick={()=>setImage(item)} src={item} key={index} className='w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer' alt="" />
-                ))
-              }
+          <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full pr-2'>
+          {
+            productType === "" && productData.image.length > 0 ? (
+              productData.image.map((item, index) => (
+                <img
+                  onClick={() => setImage(item)}
+                  src={item}
+                  alt=""
+                  key={index}
+                  className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer border p-3"
+                />
+              ))
+            ) : productType !== "" && productType.image.length > 0 ? (
+              productType.image.map((item, index) => (
+                <img
+                  onClick={() => setImage(item)}
+                  src={item}
+                  alt=""
+                  key={index}
+                  className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer border p-3"
+                />
+              ))
+            ) : (
+              <img
+                src={assets?.logo}
+                alt="logo"
+                onClick={() => setImage(assets?.logo)}
+                className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer border p-3"
+              />
+            )
+          }
           </div>
-          <div className='w-full sm:w-[80%]'>
+          <div className='w-full sm:w-[80%] flex justify-center items-center px-2 border'>
               <img className='w-full h-auto' src={image} alt="" />
           </div>
         </div>
@@ -61,14 +91,24 @@ const Product = () => {
           <p className='mt-5 text-3xl font-medium'>{currency}{productData.price}</p>
           <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
           <div className='flex flex-col gap-4 my-8'>
-              <p>Select Size</p>
+              <p>Select Product Type</p>
               <div className='flex gap-2'>
-                {productData.sizes.map((item,index)=>(
-                  <button onClick={()=>setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
+                {productData?.product_type_data?.map((item,index)=>(
+                  <button onClick={()=>setProductType(item)} className={`border py-2 px-4 bg-gray-100 ${item === productType ? 'border-orange-500' : ''}`} key={index}>
+                    {item?.image1?.length ? <img src={item?.image1} alt="" className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
+                    </button>
                 ))}
               </div>
           </div>
-          <button onClick={()=>addToCart(productData._id,size)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
+          {productType?.size_available && <div className='flex flex-col gap-4 my-8'>
+              <p>Select Size</p>
+              <div className='flex gap-2'>
+                {productType?.sizes?.map((item,index)=>(
+                  <button onClick={()=>setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
+                ))}
+              </div>
+          </div>}
+          <button onClick={()=>addToCart(productData._id,productType, size, productType?.size_available)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
           <hr className='mt-8 sm:w-4/5' />
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
               <p>100% Original product.</p>
