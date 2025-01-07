@@ -61,6 +61,8 @@ const Add = ({token}) => {
       ...newProductTypeData[index],
       ["image"+image]: imageUrl,
     };
+
+    console.log("newProductTypeData", newProductTypeData)
     setProductTypeData(newProductTypeData);
   }
 
@@ -85,7 +87,16 @@ const Add = ({token}) => {
       formData.append("price",price)
       formData.append("category",category)
       formData.append("no_of_product_types",productTypes)
+
+      productTypeData.forEach((product, index) => {
+        product.image1 && formData.append(`image${product.index}_1`, product.image1);
+        product.image2 && formData.append(`image${product.index}_2`, product.image2);
+        product.image3 && formData.append(`image${product.index}_3`, product.image3);
+        product.image4 && formData.append(`image${product.index}_4`, product.image4);
+      });
+
       formData.append("product_type_data",JSON.stringify(productTypeData))
+      
       formData.append("bestseller",bestseller)
 
       image1 && formData.append("image1",image1)

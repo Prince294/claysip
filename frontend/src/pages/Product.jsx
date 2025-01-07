@@ -31,6 +31,11 @@ const Product = () => {
 
   useEffect(() => {
     setSize("");
+    if(productType?.image && productType?.image[0]){
+      setImage(productType.image[0]);
+    } else {
+      setImage("");
+    }
   }, [productType])
 
   return productData ? (
@@ -95,7 +100,7 @@ const Product = () => {
               <div className='flex gap-2'>
                 {productData?.product_type_data?.map((item,index)=>(
                   <button onClick={()=>setProductType(item)} className={`border py-2 px-4 bg-gray-100 ${item === productType ? 'border-orange-500' : ''}`} key={index}>
-                    {item?.image1?.length ? <img src={item?.image1} alt="" className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
+                    {item?.image && item?.image[0]?.length ? <img src={item?.image[0]} alt="" className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
                     </button>
                 ))}
               </div>

@@ -46,6 +46,28 @@ const addProduct = async (req, res) => {
         );
 
         console.log('Uploaded image URLs:', imagesUrl);
+
+        const productTypeData = JSON.parse(product_type_data);
+
+        for (const product of productTypeData) {
+            var img1 = req.files[`image${product.index}_1`] && req.files[`image${product.index}_1`][0]
+            var img2 = req.files[`image${product.index}_2`] && req.files[`image${product.index}_2`][0]
+            var img3 = req.files[`image${product.index}_3`] && req.files[`image${product.index}_3`][0]
+            var img4 = req.files[`image${product.index}_4`] && req.files[`image${product.index}_4`][0]
+
+            if(img1){
+                product.image1 = await uploadToS3(img1);
+            }
+            if(img2){
+                product.image2 = await uploadToS3(img2);
+            }
+            if(img3){
+                product.image3 = await uploadToS3(img3);
+            }
+            if(img4){
+                product.image4 = await uploadToS3(img4);
+            }
+        }
         
         const productData = {
             name,
@@ -54,7 +76,7 @@ const addProduct = async (req, res) => {
             price: Number(price),
             bestseller: bestseller === "true" ? true : false,
             no_of_product_types: no_of_product_types,
-            product_type_data: JSON.parse(product_type_data),
+            product_type_data: productTypeData,
             image: imagesUrl,
             date: Date.now()
         }
