@@ -76,7 +76,7 @@ const Sidebar = () => {
             return (
             <>
                 <div className="flex gap-4 items-start justify-start">
-                    {item?.image[0]?.length ? <img src={item?.image[0]} alt={item?.name} className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
+                    {item?.image && item?.image[0]?.length ? <img src={item?.image[0]} alt={item?.name} className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
                     <div className="flex-row gap-4 w-full">
                         <h3>{item?.name}</h3>
                         <p>{item?.description?.length > 40 ? item?.description?.substring(0,40) + "..." : item?.description}</p>
