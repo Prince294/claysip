@@ -1,25 +1,47 @@
 import userModel from "../models/userModel.js"
+import productModel from "../models/productModel.js"
 
 
 // add products to user cart
 const addToCart = async (req,res) => {
     try {
         
-        const { userId, itemId, size } = req.body
+        const { userId, itemId, product_type, size } = req.body
 
         const userData = await userModel.findById(userId)
         let cartData = await userData.cartData;
 
         if (cartData[itemId]) {
-            if (cartData[itemId][size]) {
-                cartData[itemId][size] += 1
-            }
-            else {
-                cartData[itemId][size] = 1
+            if(!product_type){
+                if(cartData[itemId]['main']){
+                    if (cartData[itemId]['main'][size]) {
+                        cartData[itemId]['main'][size] += 1;
+                    }
+                    else {
+                        cartData[itemId]['main'][size] = 1;
+                    }
+                } else {
+                    cartData[itemId] = {...cartData[itemId], 'main' : {[size] : 1}};
+                }
+            } else {
+                if(cartData[itemId][product_type.index]){
+                    if (cartData[itemId][product_type.index][size]) {
+                        cartData[itemId][product_type.index][size] += 1;
+                    }
+                    else {
+                        cartData[itemId][product_type.index][size] = 1;
+                    }
+                } else {
+                    cartData[itemId] = {...cartData[itemId], [product_type.index] : {[size] : 1}};
+                }
             }
         } else {
             cartData[itemId] = {}
-            cartData[itemId][size] = 1
+            if(!product_type){
+                cartData[itemId] = {'main' : {[size] : 1}};
+            } else {
+                cartData[itemId] = {[product_type.index] : {[size] : 1}};
+            }
         }
 
         await userModel.findByIdAndUpdate(userId, {cartData})
@@ -36,12 +58,12 @@ const addToCart = async (req,res) => {
 const updateCart = async (req,res) => {
     try {
         
-        const { userId ,itemId, size, quantity } = req.body
+        const { userId ,itemId, product_type, size, quantity } = req.body
 
         const userData = await userModel.findById(userId)
         let cartData = await userData.cartData;
 
-        cartData[itemId][size] = quantity
+        cartData[itemId][product_type][size] = quantity
 
         await userModel.findByIdAndUpdate(userId, {cartData})
         res.json({ success: true, message: "Cart Updated" })
@@ -62,6 +84,18 @@ const getUserCart = async (req,res) => {
         
         const userData = await userModel.findById(userId)
         let cartData = await userData.cartData;
+        const products = await productModel.find({});
+        
+        const validProductIds = new Set(products.map(product => product._id.toString()));
+        for(const cartKey in cartData){
+            if (!validProductIds.has(cartKey)) {
+                delete cartData[cartKey];
+            }
+        }
+        userData.cartData = cartData;
+
+        userData.markModified('cartData');
+        await userData.save();
 
         res.json({ success: true, cartData })
 

@@ -8,7 +8,7 @@ import fs from "fs"
 const addProduct = async (req, res) => {
     try {
 
-        const { name, description, price, category, subCategory, sizes, bestseller } = req.body
+        const { name, description, price, category, no_of_product_types, product_type_data, bestseller } = req.body
 
         const image1 = req.files.image1 && req.files.image1[0]
         const image2 = req.files.image2 && req.files.image2[0]
@@ -52,9 +52,9 @@ const addProduct = async (req, res) => {
             description,
             category,
             price: Number(price),
-            subCategory,
             bestseller: bestseller === "true" ? true : false,
-            sizes: JSON.parse(sizes),
+            no_of_product_types: no_of_product_types,
+            product_type_data: JSON.parse(product_type_data),
             image: imagesUrl,
             date: Date.now()
         }
@@ -77,7 +77,22 @@ const listProducts = async (req, res) => {
     try {
         
         const products = await productModel.find({});
-        res.json({success:true,products})
+        
+        const transformedProduct = products.map(item => {
+            const { product_type_data, ...otherKeys } = item._doc || item;
+            return {
+                ...otherKeys,
+                product_type_data: product_type_data.map(typeData => {
+                    const { image1, image2, image3, image4, ...otherKeys1 } = typeData;
+                    return {
+                        ...otherKeys1,
+                        image: [image1, image2, image3, image4]
+                    }
+                })
+            }
+        });
+
+        res.json({success:true, products: transformedProduct})
 
     } catch (error) {
         console.log(error)
