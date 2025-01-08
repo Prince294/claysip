@@ -62,7 +62,6 @@ const Add = ({token}) => {
       ["image"+image]: imageUrl,
     };
 
-    console.log("newProductTypeData", newProductTypeData)
     setProductTypeData(newProductTypeData);
   }
 

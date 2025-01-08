@@ -56,7 +56,6 @@ const Orders = () => {
           return { ...obj, ...other }
         })
       )
-      console.log("transformed", transformed)
       setorderData(transformed)
   }
   },[orderData1])

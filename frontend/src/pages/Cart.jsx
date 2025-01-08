@@ -52,7 +52,6 @@ const Cart = () => {
           }
         }
       }
-      console.log("tempData")
       setCartData(tempData);
     }
   }, [cartItems, products])
@@ -67,7 +66,6 @@ const Cart = () => {
       <div>
         {
           cartData?.map((item, index) => {
-            console.log("item", item)
             const productData = products.find((product) => product._id === item._id);
             if(productData){
               return (
