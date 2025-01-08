@@ -12,10 +12,6 @@ const Sidebar = () => {
     settingCartData();
   }, [cartItems, products]);
 
-  useEffect(() => {
-    settingCartData();
-  }, []);
-
   const settingCartData = ()=>{
     if (products.length > 0) {
       const tempData = [];
@@ -27,13 +23,15 @@ const Sidebar = () => {
                 
                 var product_info = products.find(e => e._id === items);
                 if(product_info){
+                  let productTypeData = product_info.product_type_data.find(ptd => ptd.index == item);
+
                   tempData.push({
                   _id: items,
                   size: size,
                   quantity: cartItems[items][item][size],
                   name: product_info.name,
                   description: product_info.description,
-                  ...product_info.product_type_data[item]
+                  ...productTypeData
                   });
                 }
               }
@@ -74,7 +72,7 @@ const Sidebar = () => {
       <div className="flex-row w-full">
         {cartData.length ? cartData?.map((item, index)=>{
             return (
-            <>
+            <React.Fragment key={index}>
                 <div className="flex gap-4 items-start justify-start">
                     {item?.image && item?.image[0]?.length ? <img src={item?.image[0]} alt={item?.name} className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
                     <div className="flex-row gap-4 w-full">
@@ -91,7 +89,7 @@ const Sidebar = () => {
                     </div>
                 </div>
                 <hr className="w-full h-[2px] bg-black m-4"/>
-            </>
+            </React.Fragment>
             )
         }) : <div className="flex flex-col w-full gap-4 items-center justify-center mt-8">
           <img src={assets.cart_icon} className="w-20" alt="" />
