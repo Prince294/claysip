@@ -89,13 +89,15 @@ const Orders = ({ token }) => {
 
                             var product_info = products.find(e => e._id === items);
                             if (product_info) {
+                                let productTypeData = product_info.product_type_data.find(ptd => ptd.index == item);
+
                                 tempData.push({
                                     _id: items,
                                     size: size,
                                     quantity: cartItem[items][item][size],
                                     name: product_info.name,
                                     description: product_info.description,
-                                    ...product_info.product_type_data[item]
+                                    ...productTypeData
                                 });
                             }
                         }
@@ -138,18 +140,18 @@ const Orders = ({ token }) => {
       <div>
         {
           orders.map((order, index) => (
-            <div className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700 cursor-pointer' key={index}  onClick={()=>{
+            <div className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700 cursor-pointer hover:shadow-md' key={index}  onClick={()=>{
               navigate(`/order/${order._id}`, { state: { data: order } });
             }}>
               <img className='w-12' src={assets.parcel_icon} alt="" />
               <div>
-                <div className='flex max-w-50 gap-2'>
-                  {order.items && order.items.length && order.items.map((item, index) => {
+                <div className='flex gap-x-2 flex-wrap mb-4'>
+                  {order?.items && order.items.length && order.items.map((item, index) => {
                     if (index === order.items.length - 1) {
-                      return <p className='py-0.5' key={index}> {item.name} {item?.index ? <span>(Type-{item?.index+1})</span> : ""} x {item.quantity} {item.size != "_" && <span> {item.size} </span>} </p>
+                      return <p className='py-0.5 whitespace-nowrap' key={index}> {item.name} {item?.index ? <span>(Type-{item?.index+1})</span> : ""} x {item.quantity} {item.size != "_" && <span> {item.size} </span>} </p>
                     }
                     else {
-                      return <p className='py-0.5' key={index}> {item.name} {item?.index ? <span>(Type-{item?.index+1})</span> : ""} x {item.quantity} {item.size != "_" && <span> {item.size} </span>} ,</p>
+                      return <p className='py-0.5 whitespace-nowrap' key={index}> {item.name} {item?.index ? <span>(Type-{item?.index+1})</span> : ""} x {item.quantity} {item.size != "_" && <span> {item.size} </span>} ,</p>
                     }
                   })}
                 </div>
