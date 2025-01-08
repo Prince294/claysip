@@ -2,10 +2,14 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
+import FullScreenAlert from './FullScreenAlert'
 
 const List = ({ token }) => {
 
   const [list, setList] = useState([])
+  const [productIdRemove, setProductIdRemove] = useState("")
+  const [isVisible, setIsVisible] = useState(false);
+  
 
   const fetchList = async () => {
     try {
@@ -42,12 +46,22 @@ const List = ({ token }) => {
     }
   }
 
+  const buttonClickResponse = (resp)=>{
+    if(resp){
+      removeProduct(productIdRemove);
+      setIsVisible(false);
+    } else {
+      setIsVisible(false);
+    }
+  }
+
   useEffect(() => {
     fetchList()
   }, [])
 
   return (
     <>
+      <FullScreenAlert clicked={(val)=> buttonClickResponse(val)} isVisible={isVisible} />
       <p className='mb-2'>All Products List</p>
       <div className='flex flex-col gap-2'>
 
@@ -70,7 +84,10 @@ const List = ({ token }) => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>{currency}{item.price}</p>
-              <p onClick={()=>removeProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg'>X</p>
+              <p onClick={()=>{
+                setIsVisible(true);
+                setProductIdRemove(item._id)
+                }} className='text-right md:text-center cursor-pointer text-lg'>X</p>
             </div>
           ))
         }
