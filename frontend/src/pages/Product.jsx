@@ -30,11 +30,13 @@ const Product = () => {
   }, [productId,products])
 
   useEffect(() => {
-    setSize("");
-    if(productType?.image && productType?.image[0]){
-      setImage(productType.image[0]);
-    } else {
-      setImage("");
+    if(productType != ""){
+      setSize("");
+      if(productType?.image && productType?.image[0]){
+        setImage(productType.image[0]);
+      } else {
+        setImage("");
+      }
     }
   }, [productType])
 
@@ -59,13 +61,13 @@ const Product = () => {
               ))
             ) : productType !== "" && productType.image.length > 0 ? (
               productType.image.map((item, index) => (
-                <img
+                item != "" ? <img
                   onClick={() => setImage(item)}
                   src={item}
                   alt=""
                   key={index}
                   className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer border p-3"
-                />
+                /> : ""
               ))
             ) : (
               <img
@@ -85,21 +87,29 @@ const Product = () => {
         {/* -------- Product Info ---------- */}
         <div className='flex-1'>
           <h1 className='font-medium text-2xl mt-2'>{productData.name}</h1>
-          <div className=' flex items-center gap-1 mt-2'>
+          {/* <div className=' flex items-center gap-1 mt-2'>
               <img src={assets.star_icon} alt="" className="w-3 5" />
               <img src={assets.star_icon} alt="" className="w-3 5" />
               <img src={assets.star_icon} alt="" className="w-3 5" />
               <img src={assets.star_icon} alt="" className="w-3 5" />
               <img src={assets.star_dull_icon} alt="" className="w-3 5" />
               <p className='pl-2'>(122)</p>
-          </div>
+          </div> */}
           <p className='mt-5 text-3xl font-medium'>{currency}{productData.price}</p>
           <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
           <div className='flex flex-col gap-4 my-8'>
               <p>Select Product Type</p>
               <div className='flex gap-2'>
                 {productData?.product_type_data?.map((item,index)=>(
-                  <button onClick={()=>setProductType(item)} className={`border py-2 px-4 bg-gray-100 ${item === productType ? 'border-orange-500' : ''}`} key={index}>
+                  <button onClick={()=>{
+                    if(productType == item){
+                      setSize("");
+                      setProductType("");
+                      setImage(productData.image.length ? productData.image[0] : assets?.logo)
+                    } else {
+                      setProductType(item);
+                    }
+                    }} className={`border py-2 px-4 bg-gray-100 ${item === productType ? 'border-orange-500' : ''}`} key={index}>
                     {item?.image && item?.image[0]?.length ? <img src={item?.image[0]} alt="" className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
                     </button>
                 ))}
@@ -118,22 +128,20 @@ const Product = () => {
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
               <p>100% Original product.</p>
               <p>Cash on delivery is available on this product.</p>
-              <p>Easy return and exchange policy within 7 days.</p>
           </div>
         </div>
       </div>
 
       {/* ---------- Description & Review Section ------------- */}
-      <div className='mt-20'>
+      {productData?.full_description ? <div className='mt-20'>
         <div className='flex'>
           <b className='border px-5 py-3 text-sm'>Description</b>
-          <p className='border px-5 py-3 text-sm'>Reviews (122)</p>
+          {/* <p className='border px-5 py-3 text-sm'>Reviews (122)</p> */}
         </div>
         <div className='flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500'>
-          <p>An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.</p>
-          <p>E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.</p>
+          <p>{productData?.full_description}</p>
         </div>
-      </div>
+      </div> : ""}
 
       {/* --------- display related products ---------- */}
 

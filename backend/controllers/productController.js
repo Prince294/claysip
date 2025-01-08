@@ -8,7 +8,7 @@ import fs from "fs"
 const addProduct = async (req, res) => {
     try {
 
-        const { name, description, price, category, no_of_product_types, product_type_data, bestseller } = req.body
+        const { name, description, price, category, no_of_product_types, product_type_data, bestseller, full_description } = req.body
 
         const image1 = req.files.image1 && req.files.image1[0]
         const image2 = req.files.image2 && req.files.image2[0]
@@ -72,6 +72,7 @@ const addProduct = async (req, res) => {
         const productData = {
             name,
             description,
+            full_description,
             category,
             price: Number(price),
             bestseller: bestseller === "true" ? true : false,

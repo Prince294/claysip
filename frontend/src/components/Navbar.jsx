@@ -44,7 +44,7 @@ const Navbar = () => {
   return (
     <div className={`fixed w-full top-0 left-0 flex items-center justify-between p-4 font-medium px-12 bg-stone-300 ${hasShadow ? "shadow-lg" : ""}`}>
       
-      <Link to='/'><img src={assets.logo} className='w-36' alt="" /></Link>
+      <Link to='/'><img src={assets.logo} className='w-12' alt="" /></Link>
 
       <ul className='hidden sm:flex gap-5 text-sm text-gray-600'>
         

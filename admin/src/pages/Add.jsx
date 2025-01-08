@@ -14,10 +14,10 @@ const Add = ({token}) => {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [fullDescription, setFullDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Glasses");
   const [bestseller, setBestseller] = useState(false);
-  const [sizes, setSizes] = useState([]);
 
   const [productTypes, setProductTypes] = useState("0");
   const [productTypeData, setProductTypeData] = useState([]);
@@ -83,6 +83,7 @@ const Add = ({token}) => {
       const formData = new FormData()
       formData.append("name",name)
       formData.append("description",description)
+      formData.append("full_description",fullDescription)
       formData.append("price",price)
       formData.append("category",category)
       formData.append("no_of_product_types",productTypes)
@@ -260,6 +261,11 @@ const Add = ({token}) => {
         <div className='flex gap-2 mt-2'>
           <input onChange={() => setBestseller(prev => !prev)} checked={bestseller} type="checkbox" id='bestseller' />
           <label className='cursor-pointer' htmlFor="bestseller">Add to bestseller</label>
+        </div>
+
+        <div className='w-full mt-2'>
+          <p className='mb-2'>Product full description</p>
+          <textarea onChange={(e)=>setFullDescription(e.target.value)} value={fullDescription} className='w-full max-w-[500px] px-3 py-2' type="text" placeholder='Write full description here' rows={4} required/>
         </div>
 
         <button type="submit" className='w-28 py-3 mt-4 bg-black text-white'>ADD</button>

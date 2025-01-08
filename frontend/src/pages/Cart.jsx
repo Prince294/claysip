@@ -11,9 +11,6 @@ const Cart = () => {
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
-
-
-
     if (products.length > 0) {
       const tempData = [];
       for (const items in cartItems) {
@@ -29,7 +26,8 @@ const Cart = () => {
                     _id: items,
                     size: size != "_" ? size : "Main",
                     quantity: cartItems[items][item][size],
-                    price: productTypeData.price
+                    price: productTypeData.price,
+                    image: productTypeData.image
                   })
                 }
               }
@@ -44,7 +42,8 @@ const Cart = () => {
                     _id: items,
                     size: size != "_" ? size : "Main",
                     quantity: cartItems[items][item][size],
-                    price: product_info.price
+                    price: product_info.price,
+                    image: product_info.image
                   })
                 }
               }
@@ -71,7 +70,7 @@ const Cart = () => {
               return (
                 <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
                   <div className=' flex items-start gap-6'>
-                    {productData?.image?.length ? <img src={productData.image[0]} alt={productData?.name} className='w-16 sm:w-20' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
+                    {item?.image?.length && item?.image[0] != "" ? <img src={item.image[0]} alt={productData?.name} className='w-16 sm:w-20' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
                     <div>
                       <p className='text-xs sm:text-lg font-medium'>{productData?.name}</p>
                       <div className='flex items-center gap-2 mt-2'>
