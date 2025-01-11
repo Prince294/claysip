@@ -125,23 +125,26 @@ const Product = () => {
           </div>}
           <button onClick={()=>addToCart(productData._id,productType, size, productType?.size_available)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
           <hr className='mt-8 sm:w-4/5' />
-          <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
-              <p>100% Original product.</p>
-              <p>Cash on delivery is available on this product.</p>
-          </div>
+          {productData?.full_description && <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
+            {productData?.full_description.split("\n").map((description, index)=>{
+              return <p>{description}</p>
+            })}
+          </div>}
         </div>
       </div>
 
       {/* ---------- Description & Review Section ------------- */}
-      {productData?.full_description ? <div className='mt-20'>
-        <div className='flex'>
-          <b className='border px-5 py-3 text-sm'>Description</b>
-          {/* <p className='border px-5 py-3 text-sm'>Reviews (122)</p> */}
-        </div>
-        <div className='flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500'>
-          <p>{productData?.full_description}</p>
-        </div>
-      </div> : ""}
+      {
+      // productData?.full_description ? <div className='mt-20'>
+      //   <div className='flex'>
+      //     <b className='border px-5 py-3 text-sm'>Description</b>
+      //     {/* <p className='border px-5 py-3 text-sm'>Reviews (122)</p> */}
+      //   </div>
+      //   <div className='flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500'>
+      //     <p>{productData?.full_description}</p>
+      //   </div>
+      // </div> : ""
+      }
 
       {/* --------- display related products ---------- */}
 

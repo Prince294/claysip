@@ -93,6 +93,108 @@ const addProduct = async (req, res) => {
     }
 }
 
+// function for add product
+const updateProduct = async (req, res) => {
+    try {
+
+        const { _id, name, description, price, category, no_of_product_types, product_type_data, bestseller, full_description, images } = req.body
+
+        let parseImages = JSON.parse(images);
+
+        const image1 = req.files.image1 && req.files.image1[0]
+        const image2 = req.files.image2 && req.files.image2[0]
+        const image3 = req.files.image3 && req.files.image3[0]
+        const image4 = req.files.image4 && req.files.image4[0]
+
+        const filterImages = [image1, image2, image3, image4];
+
+
+        const s3 = new AWS.S3({
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: process.env.AWS_REGION
+        });
+        const uploadToS3 = async (file) => {
+            const fileStream = fs.createReadStream(file.path);
+            const params = {
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: `uploads/${file.filename}`,
+                Body: fileStream,
+                ContentType: file.mimetype
+            };
+        
+            try {
+                const data = await s3.upload(params).promise();
+                return data.Location;
+            } catch (error) {
+                console.error('Error uploading to S3:', error);
+                throw error;
+            }
+        };
+
+        let imagesUrl = await Promise.all(
+            filterImages.map((item) => { 
+                if(item){
+                    return uploadToS3(item)
+                } else {
+                    return "";
+                }
+            })
+        );
+
+        parseImages.forEach((img, index) => {
+            if(img != ""){
+                imagesUrl[index] = img;
+            }
+        });
+
+        console.log('Uploaded image URLs:', imagesUrl);
+
+        const productTypeData = JSON.parse(product_type_data);
+
+        for (const product of productTypeData) {
+            var img1 = req.files[`image${product.index}_1`] && req.files[`image${product.index}_1`][0]
+            var img2 = req.files[`image${product.index}_2`] && req.files[`image${product.index}_2`][0]
+            var img3 = req.files[`image${product.index}_3`] && req.files[`image${product.index}_3`][0]
+            var img4 = req.files[`image${product.index}_4`] && req.files[`image${product.index}_4`][0]
+
+            if(img1){
+                product.image1 = await uploadToS3(img1);
+            }
+            if(img2){
+                product.image2 = await uploadToS3(img2);
+            }
+            if(img3){
+                product.image3 = await uploadToS3(img3);
+            }
+            if(img4){
+                product.image4 = await uploadToS3(img4);
+            }
+        }
+        
+        const productData = {
+            name,
+            description,
+            full_description,
+            category,
+            price: Number(price),
+            bestseller: bestseller === "true" ? true : false,
+            no_of_product_types: no_of_product_types,
+            product_type_data: productTypeData,
+            image: imagesUrl,
+            date: Date.now()
+        }
+
+        await productModel.findByIdAndUpdate(_id, productData, { new: true, runValidators: true })
+
+        res.json({ success: true, message: "Product Updated" })
+
+    } catch (error) {
+        console.log("Error while add product", error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
 // function for list product
 const listProducts = async (req, res) => {
     try {
@@ -184,4 +286,4 @@ const singleProduct = async (req, res) => {
     }
 }
 
-export { listProducts, addProduct, removeProduct, singleProduct, filterCategory }
+export { listProducts, addProduct, updateProduct, removeProduct, singleProduct, filterCategory }

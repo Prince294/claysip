@@ -77,6 +77,7 @@ const Collection = () => {
       setCategory(data.data);
     } else {
       setSpecificCat(false);
+      setCategory("");
     }
   },[data])
 
@@ -95,7 +96,7 @@ const Collection = () => {
 
             {filters?.categories?.map((filter, index)=>{
               return (
-                <p className='flex gap-2'>
+                <p className='flex gap-2' key={index}>
                   <input className='w-3' type="checkbox" value={filter} onChange={toggleCategory}/> {filter}
                 </p>
               )
@@ -115,7 +116,7 @@ const Collection = () => {
       <div className='flex-1'>
 
         <div className='flex justify-between text-base sm:text-2xl mb-4'>
-            <Title text1={specificCat ? data.data : 'ALL'} text2={'COLLECTIONS'} />
+            <Title text1={specificCat ? data?.data : 'ALL'} text2={'COLLECTIONS'} />
             {/* Porduct Sort */}
             <select onChange={(e)=>setSortType(e.target.value)} className='border-2 border-gray-300 text-sm px-2'>
               <option value="relavent">Sort by: Relavent</option>

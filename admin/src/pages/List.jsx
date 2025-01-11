@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import FullScreenAlert from './FullScreenAlert'
+import { assets } from '../assets/assets'
+import { useNavigate } from 'react-router-dom'
 
 const List = ({ token }) => {
-
+  const navigate = useNavigate();
   const [list, setList] = useState([])
   const [productIdRemove, setProductIdRemove] = useState("")
   const [isVisible, setIsVisible] = useState(false);
@@ -84,10 +86,15 @@ const List = ({ token }) => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>{currency}{item.price}</p>
-              <p onClick={()=>{
-                setIsVisible(true);
-                setProductIdRemove(item._id)
-                }} className='text-right md:text-center cursor-pointer text-lg'>X</p>
+              <div className='flex items-center justify-center w-full gap-4'>
+                <img src={assets.pencil_icon} onClick={()=>{
+                  navigate(`/add/${item._id}`, { state: { data: item } });
+                }} alt="edit" className='w-4 cursor-pointer' title='Edit Product' />
+                <p onClick={()=>{
+                  setIsVisible(true);
+                  setProductIdRemove(item._id)
+                }} className='cursor-pointer text-lg' title='Delete Product'>X</p>
+              </div>
             </div>
           ))
         }
