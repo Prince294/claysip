@@ -22,7 +22,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-20 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+      <div className="mt-[120px]">
         <ToastContainer />
         <SearchBar />
         <Routes>

@@ -90,7 +90,9 @@ const Orders = ({ token }) => {
                             var product_info = products.find(e => e._id === items);
                             if (product_info) {
                                 let productTypeData = product_info.product_type_data.find(ptd => ptd.index == item);
-
+                                if(productTypeData.price == ""){
+                                  productTypeData['price'] = product_info.price;
+                                }
                                 tempData.push({
                                     _id: items,
                                     size: size,

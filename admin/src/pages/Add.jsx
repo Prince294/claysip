@@ -213,7 +213,7 @@ const Add = ({token}) => {
 
                   <div className='ml-4'>
                     <p className='mb-2'>Product Price</p>
-                    <input onChange={(e) => setProductTypePrice(index, e.target.value)} value={productTypeData[index]?.price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" placeholder='25' />
+                    <input onChange={(e) => setProductTypePrice(index, e.target.value)} value={productTypeData[index]?.price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" placeholder='25' required/>
                   </div>
 
                   <div className='flex gap-2 mt-2 items-center ml-6'>

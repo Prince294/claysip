@@ -17,9 +17,17 @@ const LatestCollection = () => {
     },[products])
 
   return (
-    <div className='my-10 flex flex-col'>
+
+     <div className="py-16">
+    <div className="container">
+    <div className='flex flex-col'>
       <div className='text-center my-8 text-3xl'>
-          <Title text1={'PRODUCT'} text2={'CATEGORIES'} />
+          <Title text1={'product'} text2={'categories'} />
+          <img
+              src={assets.underline}
+              className="w-[150px] mx-auto"
+              alt=""
+            />
           {/* <p className='w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600'>
           Discover the art of cooking with terracotta pots.
           </p> */}
@@ -27,7 +35,7 @@ const LatestCollection = () => {
 
       {/* Rendering Products */}
       {/* <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'> */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-4 w-9/12 h-[400px] self-center">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-rows-2 gap-4 md:w-[90%] lg:w-[80%] self-center">
         <div className="row-span-2 cursor-pointer" onClick={()=>{
           navigate('/collection', { state: { data: "Glasses" } })
         }}>
@@ -56,6 +64,9 @@ const LatestCollection = () => {
         } */}
       </div>
     </div>
+    </div>
+    </div>
+    
   )
 }
 

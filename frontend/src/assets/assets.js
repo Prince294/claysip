@@ -1,6 +1,9 @@
 import logo from './logo.png'
 import hero_img from './hero_img.png'
+import hero_pot1 from './pot1_image.jpg'
+import hero_pot2 from './pot2_image.jpg'
 import cart_icon from './cart_icon.png'
+import shoping_cart from './shoping_cart.svg'
 import bin_icon from './bin_icon.png'
 import dropdown_icon from './dropdown_icon.png'
 import exchange_icon from './exchange_icon.png'
@@ -21,8 +24,33 @@ import glasses from './glasses.jpg'
 import jugs from './jugs.jpg'
 import bottle from './mud-bottle.jpeg'
 import pot from './pot.jpg'
+import underline from './underline.svg'
+import underline_white from './underline-white.svg'
+import scissor from './scissor.svg'
+import bestseller1 from './bestseller1.jpg'
+import bestseller2 from './bestseller2.jpg'
+import bestseller3 from './bestseller3.jpg'
+import gmail from './gmail.svg'
+import phone from './phone.svg'
+import location from './location.svg'
+import interface_ui from './interface.png'
+import create_account from './create-account.svg'
 
 export const assets = {
+    interface_ui,
+    create_account,
+    gmail,
+    phone,
+    location,
+    bestseller1,
+    bestseller2,
+    bestseller3,
+    shoping_cart,
+    scissor,
+    underline,
+    underline_white,
+    hero_pot1,
+    hero_pot2,
     logo,
     hero_img,
     cart_icon,
