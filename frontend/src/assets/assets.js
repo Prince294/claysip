@@ -35,6 +35,7 @@ import phone from './phone.svg'
 import location from './location.svg'
 import interface_ui from './interface.png'
 import create_account from './create-account.svg'
+import loader from './loader.gif'
 
 export const assets = {
     interface_ui,
@@ -74,4 +75,5 @@ export const assets = {
     jugs,
     bottle,
     pot,
+    loader
 }

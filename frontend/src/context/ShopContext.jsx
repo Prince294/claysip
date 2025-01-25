@@ -20,6 +20,8 @@ const ShopContextProvider = (props) => {
     const [userData, setUserData] = useState([])
     const navigate = useNavigate();
 
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const addToCart = async (itemId, product_type, size, is_size_available) => {
         if(!token){
@@ -295,7 +297,7 @@ const ShopContextProvider = (props) => {
         cartItems, addToCart,setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
-        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData
+        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData, setIsLoading, isLoading
     }
 
     return (

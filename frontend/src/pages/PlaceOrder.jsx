@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 const PlaceOrder = () => {
 
     const [method, setMethod] = useState('cod');
-    const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext);
+    const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, setIsLoading } = useContext(ShopContext);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -43,10 +43,14 @@ const PlaceOrder = () => {
 
                     const { data } = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, { headers: { token } })
                     if (data.success) {
+                        setIsLoading(false);
                         navigate('/orders')
                         setCartItems({})
+                    } else {
+                        setIsLoading(false);
                     }
                 } catch (error) {
+                    setIsLoading(false);
                     console.log(error)
                     toast.error(error)
                 }
@@ -57,6 +61,7 @@ const PlaceOrder = () => {
     }
 
     const onSubmitHandler = async (event) => {
+        setIsLoading(true);
         event.preventDefault()
         try {
             let orderData = {
@@ -72,10 +77,12 @@ const PlaceOrder = () => {
                 case 'cod':
                     const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } })
                     if (response.data.success) {
+                        setIsLoading(false);
                         setCartItems({})
                         toast.success("Order Has Been Placed")
                         navigate('/orders')
                     } else {
+                        setIsLoading(false);
                         toast.error(response.data.message)
                     }
                     break;
@@ -86,6 +93,8 @@ const PlaceOrder = () => {
                     const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } })
                     if (responseRazorpay.data.success) {
                         initPay(responseRazorpay.data.order)
+                    } else {
+                        setIsLoading(false);
                     }
 
                     break;

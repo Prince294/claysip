@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
@@ -17,10 +17,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify";
 import Sidebar from "./components/Sidebar";
+import Loader from "./pages/Loader";
+import { ShopContext } from "./context/ShopContext";
 
 const App = () => {
+  const { isLoading } = useContext(ShopContext);
+
   return (
     <>
+      <Loader open={isLoading} />
       <Navbar />
       <div className="mt-[90px]">
         <ToastContainer />
