@@ -109,7 +109,7 @@ const allOrders = async (req,res) => {
 
     try {
         
-        const orders = await orderModel.find({});
+        const orders = await orderModel.find({}).sort({ date: -1 });
         res.json({success:true,orders})
 
     } catch (error) {

@@ -22,6 +22,11 @@ const ShopContextProvider = (props) => {
 
 
     const addToCart = async (itemId, product_type, size, is_size_available) => {
+        if(!token){
+            navigate("/login");
+            return;
+        }
+
         if (is_size_available && size == "") {
             toast.error('Select Product Size');
             return;

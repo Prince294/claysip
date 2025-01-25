@@ -4,7 +4,7 @@ import { assets } from '../assets/assets';
 import { Link, NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
-  const { getCartAmount, cartItems, products, currency, updateQuantity, sidebar, toggleSidebar } = useContext(ShopContext);
+  const { getCartAmount, cartItems, products, currency, updateQuantity, sidebar, toggleSidebar, token } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
 
@@ -100,9 +100,12 @@ const Sidebar = () => {
         </div>}
       </div>
 
-      <Link to='/cart' className="mt-auto">
+      {token ? <Link to='/cart' className="mt-auto">
         <button className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase' onClick={() => toggleSidebar(false)}>Proceed to checkout</button>
-      </Link>
+      </Link> : 
+      <Link to='/login' className="mt-auto">
+        <button className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase' onClick={() => toggleSidebar(false)}>Proceed to checkout</button>
+      </Link>}
 
     </div>
   );
