@@ -61,7 +61,7 @@ const Orders = () => {
   },[orderData1])
 
   return (
-    <div className='border-t pt-16'>
+    <div className='border-t pt-16 px-20'>
 
         <div className='text-2xl'>
             <Title text1={'MY'} text2={'ORDERS'}/>
@@ -89,7 +89,9 @@ const Orders = () => {
                             <p className='min-w-2 h-2 rounded-full bg-green-500'></p>
                             <p className='text-sm md:text-base'>{item.status}</p>
                         </div>
-                        <button onClick={loadOrderData} className='border px-4 py-2 text-sm font-medium rounded-sm'>Track Order</button>
+                        <a href="https://www.delhivery.com/tracking" target='_blank'>
+                          <button onClick={loadOrderData} className='border px-4 py-2 text-sm font-medium rounded-sm'>Track Order</button>
+                        </a>
                     </div>
                 </div>
               ))

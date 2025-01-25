@@ -48,9 +48,9 @@ const Navbar = () => {
     return (
 
 
-        <div className={`h-[120px] fixed w-full top-0 left-0 z-50 flex items-center justify-between p-2 font-medium px-4 md:px-6 xl:px-12 bg-lightstone ${hasShadow ? "shadow-lg" : ""}`}>
+        <div className={`h-[90px] fixed w-full top-0 left-0 z-50 flex items-center justify-between p-2 font-medium px-4 md:px-6 xl:px-12 bg-lightstone ${hasShadow ? "shadow-lg" : ""}`}>
 
-            <Link to='/'><img src={assets.logo} className='-ml-2 w-28 md:w-32' alt="" /></Link>
+            <Link to='/'><img src={assets.logo} className='-ml-2 w-20 md:w-24' alt="" /></Link>
 
             <ul className='hidden sm:flex gap-8 text-sm text-secondary'>
 
@@ -76,11 +76,11 @@ const Navbar = () => {
                     <img onClick={() => token ? null : navigate('/login')} className='w-5 cursor-pointer' src={assets.profile_icon} alt="" />
                     {/* Dropdown Menu */}
                     {token &&
-                        <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4'>
-                            <div className='flex flex-col gap-2 w-36 py-3 px-5bg-slate-100 text-gray-500 rounded'>
-                                <p onClick={() => navigate('/profile')} className='cursor-pointer hover:text-black'>My Profile</p>
-                                <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
-                                <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
+                        <div className='group-hover:block hidden absolute dropdown-menu -right-1 pt-2'>
+                            <div className='flex flex-col gap-2 bg-slate-100 py-3 text-gray-500 rounded ml-4 break-keep whitespace-nowrap'>
+                                <p onClick={() => navigate('/profile')} className='cursor-pointer hover:text-black w-full px-4 pr-10'>My Profile</p>
+                                <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black w-full px-4 pr-10'>Orders</p>
+                                <p onClick={logout} className='cursor-pointer hover:text-black w-full px-4 pr-10'>Logout</p>
                             </div>
                         </div>}
                 </div>

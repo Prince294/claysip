@@ -12,6 +12,21 @@ const Login = () => {
   const [phone, setPhone] = useState("");
   const [password, setPasword] = useState("");
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [verifyButtonClicked, setVerifyButtonClicked] = useState(false);
+
+  const [time, setTime] = useState(0);
+  const [text, setText] = useState("OTP");
+
+  useEffect(() => {
+    if (time > 0) {
+      const timer = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [time]);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -22,6 +37,7 @@ const Login = () => {
           phone,
           email,
           password,
+          otp
         });
         if (response.data.success) {
           setToken(response.data.token);
@@ -47,6 +63,29 @@ const Login = () => {
     }
   };
 
+  const generateOtp = async () => {
+    if(time > 0){
+      return;
+    }
+    try {
+      const response = await axios.post(backendUrl + "/api/user/generate-otp", {
+        email,
+        type: "signup"
+      });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setVerifyButtonClicked(true)
+        setTime(30);
+      } else {
+        toast.error(response.data.message);
+      }
+      
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       navigate("/");
@@ -54,7 +93,7 @@ const Login = () => {
   }, [token]);
 
   return (
-    <div className="py-16 mb-8">
+    <div className="py-16 mb-8 pt-6">
       <div className="container">
 
         <form
@@ -89,14 +128,32 @@ const Login = () => {
               />
             </>
           )}
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            type="email"
-            className="w-full border-1 border-primary focus:ring-primary rounded-sm focus:border-primary rounded-1 text-base px-2"
-            placeholder="Email"
-            required
-          />
+          <div className="w-full relative">
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              type="email"
+              className="w-full border-1 border-primary focus:ring-primary rounded-sm focus:border-primary rounded-1 text-base px-2"
+              placeholder="Email"
+              required
+            />
+            {currentState !== "Login" ? 
+              !isVerified ? <button type="button" className="bg-slate-500 text-white font-light text-sm px-4 py-1 hover:bg-slate-700 rounded-lg absolute top-1/2 right-2 -translate-y-1/2" onClick={generateOtp}>{time > 0 ? time : text}</button>
+              : <span className="bg-green-500 text-white font-light text-sm px-4 py-1 rounded-lg absolute top-1/2 right-2 -translate-y-1/2">Verified</span>
+            : <></>}
+          </div>
+
+          {verifyButtonClicked && !isVerified ?
+            <input
+              onChange={(e) => setOtp(e.target.value)}
+              value={otp}
+              type="number"
+              className="w-full border-1 border-primary focus:ring-primary rounded-sm focus:border-primary rounded-1 text-base px-2"
+              placeholder="Enter OTP"
+              required
+            /> 
+           : <></>}
+
           <input
             onChange={(e) => setPasword(e.target.value)}
             value={password}

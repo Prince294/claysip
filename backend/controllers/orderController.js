@@ -37,7 +37,7 @@ const placeOrder = async (req,res) => {
 
 
     } catch (error) {
-        console.log(error)
+        console.log("placeOrder", error)
         res.json({success:false,message:error.message})
     }
 
@@ -78,7 +78,7 @@ const placeOrderRazorpay = async (req,res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        console.log("placeOrderRazorpay", error)
         res.json({success:false,message:error.message})
     }
 }
@@ -98,7 +98,7 @@ const verifyRazorpay = async (req,res) => {
         }
 
     } catch (error) {
-        console.log(error)
+        console.log("verifyRazorpay", error)
         res.json({success:false,message:error.message})
     }
 }
@@ -109,7 +109,7 @@ const allOrders = async (req,res) => {
 
     try {
         
-        const orders = await orderModel.find({})
+        const orders = await orderModel.find({});
         res.json({success:true,orders})
 
     } catch (error) {
@@ -125,7 +125,7 @@ const userOrders = async (req,res) => {
         
         const { userId } = req.body
 
-        const orders = await orderModel.find({ userId })
+        const orders = await orderModel.find({ userId }).sort({ date: -1 });
         res.json({success:true,orders})
 
     } catch (error) {
