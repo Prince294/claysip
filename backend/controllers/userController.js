@@ -96,6 +96,53 @@ const registerUser = async (req, res) => {
     }
 }
 
+
+// Route for reset the password
+const forgotPassword = async (req, res) => {
+    try {
+
+        const { email, password, otp } = req.body;
+
+        // checking user already exists or not
+        const exists = await userModel.findOne({ email });
+        if (!exists) {
+            return res.json({ success: false, message: "User not exists with this email" })
+        }
+
+        // validating email format & strong password
+        if (!validator.isEmail(email)) {
+            return res.json({ success: false, message: "Please enter a valid email" })
+        }
+
+        if (password.length < 8) {
+            return res.json({ success: false, message: "Please enter a strong password" })
+        }
+
+        // hashing user password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+        
+        const verified = await verifyOtp(otp, email, "forgot-password");
+
+        if(!verified.success){
+            return res.json(verified);
+        }
+
+
+        const updatedUser = await userModel.findOneAndUpdate(
+            { email: email },
+            { $set: { password: hashedPassword } },
+            { new: true }
+          );
+
+        res.json({ success: true, message: "Password reset successfully" })
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
+
 // Route for admin login
 const adminLogin = async (req, res) => {
     try {
@@ -180,6 +227,14 @@ const generateOtp = async (req, res) => {
         if(!email || email == "" || !validator.isEmail(email)){
             return res.json({ success: false, message: "Invalid email" })
         } 
+
+        if(type == "forgot-password"){
+            const user = await userModel.findOne({ email });
+            if(!user){
+                return res.json({ success: false, message: "Email not exist" })
+            }
+        }
+
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
         const expiredOn = new Date();
@@ -201,17 +256,30 @@ const generateOtp = async (req, res) => {
         const smtp_pass = process.env.SMTP_PASSWORD;
     
         const to = email;
-        const subject = "SignUp OTP";
-        const message = `<div style="padding: 20px; background-color: rgb(255, 255, 255);">
-                        <div style="color: rgb(0, 0, 0); text-align: left;">
-                        <h1 style="margin: 1rem 0">Verification code</h1>
-                        <p style="padding-bottom: 16px">Please use the verification code below to sign up.</p>
-                        <p style="padding-bottom: 16px"><strong style="font-size: 130%">${otp}</strong></p>
-                        <p style="padding-bottom: 16px">If you didn't request this, you can ignore this email.</p>
-                        <p style="padding-bottom: 16px">Thanks,<br>The ClaySip Team</p>
-                        </div>
-                        </div>`;
-    
+        var subject = "", message = "";
+        if(type == "signup"){
+            subject = "SignUp OTP";
+            message = `<div style="padding: 20px; background-color: rgb(255, 255, 255);">
+            <div style="color: rgb(0, 0, 0); text-align: left;">
+            <h1 style="margin: 1rem 0">Verification code</h1>
+            <p style="padding-bottom: 16px">Please use the verification code below to sign up.</p>
+            <p style="padding-bottom: 16px"><strong style="font-size: 130%">${otp}</strong></p>
+            <p style="padding-bottom: 16px">If you didn't request this, you can ignore this email.</p>
+            <p style="padding-bottom: 16px">Thanks,<br>The ClaySip Team</p>
+            </div>
+            </div>`;   
+        } else if(type == "forgot-password"){
+            subject = "Forgot Password OTP";
+            message = `<div style="padding: 20px; background-color: rgb(255, 255, 255);">
+            <div style="color: rgb(0, 0, 0); text-align: left;">
+            <h1 style="margin: 1rem 0">Verification code</h1>
+            <p style="padding-bottom: 16px">Please use the verification code below to reset your password.</p>
+            <p style="padding-bottom: 16px"><strong style="font-size: 130%">${otp}</strong></p>
+            <p style="padding-bottom: 16px">If you didn't request this, you can ignore this email.</p>
+            <p style="padding-bottom: 16px">Thanks,<br>The ClaySip Team</p>
+            </div>
+            </div>`; 
+        }
         const transporter = nodemailer.createTransport({
             host: smtp_host,
             port: smtp_port,
@@ -264,4 +332,4 @@ const verifyOtp = async (otp, email, type) => {
 }
 
 
-export { loginUser, registerUser, adminLogin, userData, getUserData, generateOtp, verifyOtp }
+export { loginUser, registerUser, adminLogin, userData, getUserData, generateOtp, verifyOtp, forgotPassword }

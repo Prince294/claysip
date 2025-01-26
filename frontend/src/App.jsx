@@ -19,6 +19,7 @@ import Verify from "./pages/Verify";
 import Sidebar from "./components/Sidebar";
 import Loader from "./pages/Loader";
 import { ShopContext } from "./context/ShopContext";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => {
   const { isLoading } = useContext(ShopContext);
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/product/:productId" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/place-order" element={<PlaceOrder />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/profile" element={<Profile />} />
