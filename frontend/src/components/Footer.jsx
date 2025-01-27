@@ -14,7 +14,7 @@ const Footer = () => {
             <img src={assets.logo} className='mb-5 w-32' alt="" />
             <p className='w-full md:w-2/3 text-secondary max-w-80'>
               529/3 New Sarvodya Nagar
-              Sikheda Riad Hapur Pilkhuwa
+              Sikheda Road Hapur Pilkhuwa
               Uttar Pradesh, 245304
             </p>
           </div>
