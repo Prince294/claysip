@@ -42,7 +42,11 @@ const BestSeller = () => {
         <Swiper
         modules={[Autoplay,Navigation, Mousewheel, Keyboard]}
         navigation={true}
-        mousewheel={true}
+        mousewheel={{
+          forceToAxis: true,
+          sensitivity: 1,
+          releaseOnEdges: true,
+        }}
         keyboard={true}
         spaceBetween={15}
         breakpoints={{
