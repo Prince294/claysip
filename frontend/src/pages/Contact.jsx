@@ -34,7 +34,7 @@ const Contact = () => {
         </div>
       </div>
     </div>
-     <NewsletterBox />
+     {/* <NewsletterBox /> */}
      </>
   )
 }
