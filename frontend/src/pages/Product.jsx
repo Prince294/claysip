@@ -51,15 +51,15 @@ const Product = () => {
             <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
               <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll lg:justify-between lg:gap-2 sm:justify-normal sm:w-[18.7%] w-full pr-2'>
                 {
-                  productType === "" && productData.image.length > 0 ? (
-                    productData.image.map((item, index) => (
-                      <img
+                  productType === "" && productData?.image.length > 0 ? (
+                    productData?.image.map((item, index) => (
+                      item !== "" ? <img
                         onClick={() => setImage(item)}
                         src={item}
                         alt=""
                         key={index}
                         className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer border p-3"
-                      />
+                        /> : <></>
                     ))
                   ) : productType !== "" && productType.image.length > 0 ? (
                     productType.image.map((item, index) => (
@@ -88,7 +88,7 @@ const Product = () => {
 
             {/* -------- Product Info ---------- */}
             <div className='flex-1'>
-              <h1 className='text-secondary capitalize font-semibold text-3xl mt-2'>{productData.name}</h1>
+              <h1 className='text-secondary capitalize font-semibold text-3xl mt-2'>{productData?.name}</h1>
               {/* <div className=' flex items-center gap-1 mt-2'>
               <img src={assets.star_icon} alt="" className="w-3 5" />
               <img src={assets.star_icon} alt="" className="w-3 5" />
@@ -97,29 +97,32 @@ const Product = () => {
               <img src={assets.star_dull_icon} alt="" className="w-3 5" />
               <p className='pl-2'>(122)</p>
           </div> */}
-              <p className='mt-5 text-3xl font-medium'>{currency}{productData.price}</p>
+              <p className='mt-5 text-3xl font-medium'>{currency}{productData?.price}</p>
               {/* <p className='text-base text-secondary capitalize font-medium'>{productData.description}</p> */}
-              <p className='text-sm text-secondary capitalize mt-2'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</p>
+              <p className='text-sm text-secondary capitalize mt-2'>{productData?.description?.length < 250 ? productData?.description : productData?.description.substring(0,250) + "..."}</p>
 
 
-              <div className='flex flex-col gap-4 my-8'>
-                <p className='text-base text-secondary capitalize font-medium'>Select Product Type</p>
-                <div className='flex gap-2'>
-                  {productData?.product_type_data?.map((item, index) => (
-                    <button onClick={() => {
-                      if (productType == item) {
-                        setSize("");
-                        setProductType("");
-                        setImage(productData.image.length ? productData.image[0] : assets?.logo)
-                      } else {
-                        setProductType(item);
-                      }
-                    }} className={`border py-2 px-4 bg-gray-100 ${item === productType ? 'border-primary' : ''}`} key={index}>
-                      {item?.image && item?.image[0]?.length ? <img src={item?.image[0]} alt="" className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <div className='flex flex-col gap-4 my-6'>
+                {productData?.product_type_data.length > 0 ? 
+                  <>
+                    <p className='text-base text-secondary capitalize font-medium'>Select Product Type</p>
+                    <div className='flex gap-2'>
+                      {productData?.product_type_data?.map((item, index) => (
+                        <button onClick={() => {
+                          if (productType == item) {
+                            setSize("");
+                            setProductType("");
+                            setImage(productData.image.length ? productData.image[0] : assets?.logo)
+                          } else {
+                            setProductType(item);
+                          }
+                        }} className={`border py-2 px-4 bg-gray-100 ${item === productType ? 'border-primary' : ''}`} key={index}>
+                          {item?.image && item?.image[0]?.length ? <img src={item?.image[0]} alt="" className='w-16' /> : <img src={assets?.logo} alt={"logo"} className='w-16' />}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+               : <></>}</div>
               {productType?.size_available && <div className='flex flex-col gap-4 my-8'>
                 <p className='text-base text-secondary capitalize font-medium'>Select Size</p>
                 <div className='flex gap-2'>

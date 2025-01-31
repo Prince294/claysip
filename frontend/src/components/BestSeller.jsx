@@ -64,23 +64,16 @@ const BestSeller = () => {
           },
         }}
        
-        className="mySwiper"
+        className="mySwiper pb-16"
       >
-        
-       
-       
           {bestSeller.length > 0 ? bestSeller.map((item, index) => {
             return (<>
               <SwiperSlide>
-                <Link onClick={() => scrollTo(0, 0)} className='w-full cursor-pointer' to={`/product/${item?._id}`} key={index}>
-                  <a href="#" className='w-full'>
-                    <img className="p-2 w-full rounded-t-lg" src={item?.image?.length && item?.image[0] != "" ? item?.image[0] : assets.logo} alt="product image" />
-                  </a>
-                  <div className="p-4 rounded-md">
-                    <a href="#">
-                      <p className="text-base font-normal text-secondary">{item.name}</p>
-                    </a>
-                    <p className="text-lg font-semibold text-secondary mt-2">{currency}{item.price}</p>
+                <Link onClick={() => scrollTo(0, 0)} className='cursor-pointer flex flex-col items-center' to={`/product/${item?._id}`} key={index}>
+                  <img className="p-2 w-full rounded-t-lg max-w-[240px] max-h-[300px] object-cover hover:scale-105 transition ease-in-out" src={item?.image?.length && item?.image[0] != "" ? item?.image[0] : assets.logo} alt="product image" />
+                  <div className="px-4 py-1 rounded-md">
+                    <p className="text-base font-normal text-secondary">{item.name}</p>
+                    <p className="text-lg font-semibold text-secondary mt-1">{currency}{item.price}</p>
                   </div>
                 </Link>
               </SwiperSlide>

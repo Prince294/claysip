@@ -30,7 +30,7 @@ const Hero = () => {
         loop={true}
         className="mySwiper"
       >
-       { [1,2,3,4].map((index)=>{
+       { [1].map((index)=>{
           return(
 
         <SwiperSlide key={index}>

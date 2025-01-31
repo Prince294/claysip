@@ -8,31 +8,36 @@ const Footer = () => {
 
     <div className='bg-lightstone pt-16 px-4 md:px-7 text-secondary'>
       <div className="container">
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-14 mb-14 text-base'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-14 mb-14 text-base justify-items-start'>
 
           <div>
             <img src={assets.logo} className='mb-5 w-32' alt="" />
-            <p className='w-full md:w-2/3 text-secondary max-w-80'>
+            {/* <p className='w-full md:w-2/3 text-secondary max-w-80'>
               529/3 New Sarvodya Nagar
               Sikheda Road Hapur Pilkhuwa
               Uttar Pradesh, 245304
-            </p>
+            </p> */}
           </div>
 
           <div>
-            <p className='text-xl font-bold mb-5 capitalize'>company</p>
+            <p className='text-xl font-bold mb-4 capitalize' >explore</p>
             <ul className='flex flex-col gap-1 text-secondary'>
               <NavLink to='/'><li className='hover:text-primary'>Home</li></NavLink>
               <NavLink to='/about'><li className='hover:text-primary'>About us</li></NavLink>
+              <NavLink to='/contact'><li className='hover:text-primary'>Contact us</li></NavLink>
+              <NavLink to='/contact'><li className='hover:text-primary'>Shipping Policy</li></NavLink>
+              <a href="https://www.delhivery.com/tracking" target='_blank'><li className='hover:text-primary'>Track your order</li></a>
               {/* <NavLink to='/collection'><li>Delivery</li></NavLink>
                 <NavLink to='/collection'><li>Privacy policy</li></NavLink> */}
             </ul>
           </div>
 
           <div>
-            <p className='text-xl font-bold mb-5 capitalize'>get in touch</p>
-            <ul className='flex flex-col gap-1 text-secondary'>
-              <li>+91 9412660412</li>
+            <p className='text-xl font-bold mb-4 capitalize'>get in touch</p>
+            <ul className='flex flex-col text-secondary'>
+              <li>Phone Number:</li>
+              <li className='mb-2'>+91 9412660412</li>
+              <li>Email:</li>
               <li>info.claysip@gmail.com</li>
             </ul>
           </div>
