@@ -6,7 +6,7 @@ const Footer = () => {
   return (
 
 
-    <div className='bg-lightstone pt-16 px-4 md:px-7 text-secondary'>
+    <div className='bg-lightstone pt-16 px-4 md:px-7 text-secondary mt-4'>
       <div className="container">
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-14 mb-14 text-base justify-items-start'>
 
@@ -25,7 +25,7 @@ const Footer = () => {
               <NavLink to='/'><li className='hover:text-primary'>Home</li></NavLink>
               <NavLink to='/about'><li className='hover:text-primary'>About us</li></NavLink>
               <NavLink to='/contact'><li className='hover:text-primary'>Contact us</li></NavLink>
-              <NavLink to='/contact'><li className='hover:text-primary'>Shipping Policy</li></NavLink>
+              <NavLink to='/policy'><li className='hover:text-primary'>Shipping Policy</li></NavLink>
               <a href="https://www.delhivery.com/tracking" target='_blank'><li className='hover:text-primary'>Track your order</li></a>
               {/* <NavLink to='/collection'><li>Delivery</li></NavLink>
                 <NavLink to='/collection'><li>Privacy policy</li></NavLink> */}
@@ -38,7 +38,8 @@ const Footer = () => {
               <li>Phone Number:</li>
               <li className='mb-2'>+91 9412660412</li>
               <li>Email:</li>
-              <li>info.claysip@gmail.com</li>
+              <li className='mb-3'>info.claysip@gmail.com</li>
+              <li><a href='https://www.instagram.com/clay_sip' target='_blank' title='Claysip - Instagram'><img src={assets.instagram} alt="" className='max-w-[24px]' /></a></li>
             </ul>
           </div>
         </div>

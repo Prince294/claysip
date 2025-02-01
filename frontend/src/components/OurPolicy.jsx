@@ -8,7 +8,7 @@ const OurPolicy = () => {
       <div className='bg-white py-16 text-secondary'>
       <div className='container'>
         <div className="text-center mb-16 privacy-policy-title">
-          <Title text1={"why"} text2={"claysip blessings"}  />
+          <Title text1={"why"} text2={"claysip"}  />
           <img
               src={assets.underline}
               className="w-[150px] mx-auto"

@@ -36,6 +36,15 @@ import location from './location.svg'
 import interface_ui from './interface.png'
 import create_account from './create-account.svg'
 import loader from './loader.gif'
+import healthcare from './healthcare.png'
+import cooling from './cooling.png'
+import eco_friendly from './eco-friendly.png'
+import selection from './selection.png'
+import washing from './washing.png'
+import handling from './handling.png'
+import seasoning from './seasoning.png'
+import instagram from './instagram.png'
+
 
 export const assets = {
     interface_ui,
@@ -75,5 +84,13 @@ export const assets = {
     jugs,
     bottle,
     pot,
-    loader
+    loader,
+    healthcare,
+    cooling,
+    eco_friendly,
+    selection,
+    washing,
+    handling,
+    seasoning,
+    instagram
 }
