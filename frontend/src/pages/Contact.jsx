@@ -25,7 +25,7 @@ const Contact = () => {
           <div className='flex flex-col justify-center items-start gap-2'>
             <h4 className='font-semibold text-2xl text-secondary mb-4'> Our Store</h4>
             <p className=' text-secondary'> <span><img className='w-12 mb-2' src={assets.location} alt="" /></span> 529/3 New Sarvodya Nagar<br /> Sikheda Road Hapur Pilkhuwa<br />Uttar Pradesh, 245304</p>
-            <p className=' text-secondary'> <span><img className='w-12 mb-2' src={assets.phone} alt="" /></span>  Tel: +91 9412660412</p>
+            <p className=' text-secondary'> <span><img className='w-12 mb-2' src={assets.phone} alt="" /></span>  Tel: +91 8791433405, +91 9412660412, +91 9627567273</p>
             <p className=' text-secondary'> <span><img className='w-12 mb-2' src={assets.gmail} alt="" /></span>   Email: info.claysip@gmail.com</p>
             {/* <p className='font-semibold text-xl text-gray-600'>Careers at Claysip</p> */}
             {/* <p className=' text-gray-500'>Learn more about our teams and job openings.</p>

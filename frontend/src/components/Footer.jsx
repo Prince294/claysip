@@ -37,7 +37,8 @@ const Footer = () => {
             <p className='text-xl font-bold mb-4 capitalize'>get in touch</p>
             <ul className='flex flex-col text-secondary'>
               <li>Phone Number:</li>
-              <li className='mb-2'>+91 9412660412</li>
+              <li>+91 8791433405, +91 9412660412,</li>
+              <li className='mb-2'>+91 9627567273</li>
               <li>Email:</li>
               <li className='mb-3'>info.claysip@gmail.com</li>
               <li><a href='https://www.instagram.com/clay_sip' target='_blank' title='Claysip - Instagram'><img src={assets.instagram} alt="" className='max-w-[24px]' /></a></li>

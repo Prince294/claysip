@@ -46,7 +46,7 @@ const ShippingPolicy = () => {
           <li className='mb-6'>Once your order is shipped, you will receive a tracking number via email to monitor its progress until delivery.</li>
 
           
-          <p className='text-center w-full mt-4'>For any further queries, feel free to contact us at <span className='text-orange-800'>+91 9412660412</span> or email us at <span className='text-orange-800'>info.claysip@gmail.com</span></p>
+          <p className='text-center w-full mt-4'>For any further queries, feel free to contact us at <span className='text-orange-800'>+91 8791433405, +91 9412660412, +91 9627567273</span> or email us at <span className='text-orange-800'>info.claysip@gmail.com</span></p>
           <p className='text-center w-full'>Thank you for choosing Claysip! We appreciate your trust in our craftsmanship.</p>
           
         </div>
