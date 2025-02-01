@@ -25,7 +25,8 @@ const Footer = () => {
               <NavLink to='/'><li className='hover:text-primary'>Home</li></NavLink>
               <NavLink to='/about'><li className='hover:text-primary'>About us</li></NavLink>
               <NavLink to='/contact'><li className='hover:text-primary'>Contact us</li></NavLink>
-              <NavLink to='/policy'><li className='hover:text-primary'>Shipping Policy</li></NavLink>
+              <NavLink to='/shipping-policy'><li className='hover:text-primary'>Shipping Policy</li></NavLink>
+              <NavLink to='/return-policy'><li className='hover:text-primary'>Return Policy</li></NavLink>
               <a href="https://www.delhivery.com/tracking" target='_blank'><li className='hover:text-primary'>Track your order</li></a>
               {/* <NavLink to='/collection'><li>Delivery</li></NavLink>
                 <NavLink to='/collection'><li>Privacy policy</li></NavLink> */}

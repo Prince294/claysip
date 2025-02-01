@@ -10,159 +10,45 @@ const ShippingPolicy = () => {
     
   return (
     <>
-      <div className='bg-white py-16 text-secondary flex flex-col gap-32'>
-        <div className='container flex flex-col gap-4 items-center'>
-          <div className="text-center mb-4 privacy-policy-title">
-            <Title text1={"Mudflare Mugs"} text2={"- Handcrafted Terracotta Glasses"}  />
+      <div className='bg-white py-12 text-secondary flex flex-col gap-32'>
+        <div className='container flex flex-col gap-1 items-start'>
+          <div className="text-center w-full mb-4 privacy-policy-title">
+            <Title text1={"Shipping"} text2={"Policy"} />
             <img
                 src={assets.underline}
                 className="w-[150px] mx-auto"
                 alt=""
               />
           </div>
-          <p>Celebrate the beauty of nature and tradition with our Mudflare Mugs, a set of handcrafted terracotta glasses designed to bring a rustic elegance to your everyday moments. Each piece is uniquely shaped and adorned, showcasing the craftsmanship and warmth of earthy materials. Perfect for any beverage, these mugs combine functionality, style, and wellness.</p>
+          <p className='mb-6'>At Claysip, we take pride in delivering handcrafted pottery with the utmost care and efficiency. Our goal is to ensure your orders reach you safely and on time.</p>
 
-          <div className="text-center mt-20 mb-2 privacy-policy-title">
-            <Title text1={"Why Choose"} text2={"Mudflare Mugs?"}  />
-            <img
-                src={assets.underline}
-                className="w-[150px] mx-auto"
-                alt=""
-              />
-          </div>
-          <p>Terracotta glasses like the Mudflare Mugs are not just drinkware - they're a lifestyle upgrade:</p>
+          <Title text1={"Packaging"} text2={"& Safety Measures"} />
+          <li>We are committed to delivering your orders within 7-8 business days from the date of purchase. While we strive to maintain this timeline, unforeseen circumstances such as weather conditions, holidays, or logistical delays may slightly affect delivery schedules.</li>
 
-          <div className="grid grid-cols-1 sm:gird-cols-2 md:grid-cols-3 gap-10 text-center mt-10">
-            <div className="w-full">
-              <img
-                src={assets.cooling}
-                className="w-16 m-auto mb-5"
-                alt=""
-              />
-              <p className="font-bold text-lg mb-5">Natural Cooling Properties</p>
-              <p className="text-base">
-              Keep your drinks naturally cool, offering a refreshing experience with every sip.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.box} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Health Benefits</p>
-              <p className="text-base">
-              Alkaline clay helps balance pH levels in beverages, contributing to improved digestion and overall health.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.eco_friendly} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Eco-Friendly</p>
-              <p className="text-base">
-              Crafted sustainably by skilled artisans, these mugs are biodegradable and a conscious choice for your home.
-              </p>
-            </div>
-          </div>
-        </div>
+          <li>Each product is wrapped in multiple protective layers to absorb shocks during transit.</li>
 
+          <li className='mb-6'>We use high-quality, eco-friendly cushioning materials to prevent breakage.
+          Our packaging undergoes multiple quality checks before dispatch to minimize any risk of damage.</li>
 
+          <Title text1={"Damaged or"} text2={"Broken Deliveries"}  />
+          <li>In the rare event that your order arrives damaged, we request you to:</li>
+          <ul style={{listStyleType:"circle"}} className='ml-10 mb-6'>
+            <li>Take clear photos of the damaged product and packaging.</li>
+            <li>Email us at <span className='text-orange-800'>info.claysip@gmail.com</span> within 24 hours of receiving the order.</li>
+            <li>Our team will assess the issue and provide a replacement or refund as per our policy.</li>
+          </ul>
 
-        <div className='container flex flex-col gap-4 items-center'>
-          <div className="text-center mb-4 privacy-policy-title">
-            <Title text1={"Versatile"} text2={"Uses"}  />
-            <img
-                src={assets.underline}
-                className="w-[150px] mx-auto"
-                alt=""
-              />
-          </div>
-          <p>From morning tea to evening cocktails, Mudflare Mugs enhance every drink: Perfect for water, tea, coffee, lassi, or even chilled beverages. Adds a touch of tradition to your table during gatherings or daily meals. Doubles as a charming decor element for your kitchen or dining space.</p>
+          <Title text1={"Shipping"} text2={"Locations"}  />
+          <li className='mb-6'>Currently, we deliver across PAN India. For international shipping inquiries, please contact our support team.
+          </li>
 
-          <div className="text-center mt-20 mb-2 privacy-policy-title">
-            <Title text1={"How They Are"} text2={"Made"}  />
-            <img
-                src={assets.underline}
-                className="w-[150px] mx-auto"
-                alt=""
-              />
-          </div>
+          <Title text1={"Order"} text2={"Tracking"}  />
+          <li className='mb-6'>Once your order is shipped, you will receive a tracking number via email to monitor its progress until delivery.</li>
 
-          <p>Each Mudflare Mug undergoes a meticulous crafting process to ensure quality and uniqueness:</p>
-
-          <div className="grid grid-cols-1 sm:gird-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 text-center mt-10">
-            <div className="w-full">
-              <img
-                src={assets.selection}
-                className="w-16 m-auto mb-5"
-                alt=""
-              />
-              <p className="font-bold text-lg mb-5">Clay Selection</p>
-              <p className="text-base">
-              Premium, all-natural clay is handpicked to ensure purity and durability.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.box} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Artisanal Shaping</p>
-              <p className="text-base">
-              Skilled artisans mold each mug by hand, giving it its distinctive flare and character.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.quality_icon} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Detailed Finishing</p>
-              <p className="text-base">
-              Once shaped, the mugs are air-dried, hand-decorated with traditional patterns, and kiln-fired for strength and longevity.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.support_img} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Support for Local Artisans</p>
-              <p className="text-base">
-                Evert purchase supports local artisans, helping to preserve
-                traditional crafts and empower communities.
-              </p>
-            </div>
-          </div>
-        </div>
-
-
-        <div className='container flex flex-col gap-4 items-center'>
-          <div className="text-center mb-4 privacy-policy-title">
-            <Title text1={"Care"} text2={"Instructions"}  />
-            <img
-                src={assets.underline}
-                className="w-[150px] mx-auto"
-                alt=""
-              />
-          </div>
-          <p>To keep your Mudflare Mugs in perfect condition:</p>
-
-          <div className="grid grid-cols-1 sm:gird-cols-2 md:grid-cols-3 gap-10 text-center mt-10">
-            <div className="w-full">
-              <img
-                src={assets.washing}
-                className="w-16 m-auto mb-5"
-                alt=""
-              />
-              <p className="font-bold text-lg mb-5">Washing</p>
-              <p className="text-base">
-              Rinse with warm water and clean with a soft sponge. Avoid using harsh detergents to retain the clay’s natural properties.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.handling} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Handling</p>
-              <p className="text-base">
-              Handle with care to avoid chipping or breakage, especially when full.
-              </p>
-            </div>
-            <div className="w-full">
-              <img src={assets.seasoning} className="w-16 m-auto mb-5" alt="" />
-              <p className="font-bold text-lg mb-5">Seasoning</p>
-              <p className="text-base">
-              Before first use, soak the mugs in water for a few hours to enhance durability and performance.
-              </p>
-            </div>
-          </div>
-
-          <p className='mt-16'>Infuse your daily rituals with the timeless appeal of Mudflare Mugs. With their earthy tones and health benefits, these mugs are a perfect blend of tradition and modern utility. Make every sip a celebration of heritage and sustainability. Order your set today and rediscover the joy of drinking with Mudflare Mugs!</p>
+          
+          <p className='text-center w-full mt-4'>For any further queries, feel free to contact us at <span className='text-orange-800'>+91 9412660412</span> or email us at <span className='text-orange-800'>info.claysip@gmail.com</span></p>
+          <p className='text-center w-full'>Thank you for choosing Claysip! We appreciate your trust in our craftsmanship.</p>
+          
         </div>
       </div>
 

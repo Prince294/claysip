@@ -44,6 +44,12 @@ import washing from './washing.png'
 import handling from './handling.png'
 import seasoning from './seasoning.png'
 import instagram from './instagram.png'
+import time_frame from './time-frame.png'
+import approved from './approved.png'
+import to_do_list from './to-do-list.png'
+import partial_refund from './partial-refund.png'
+import personalized from './personalized.png'
+import gift_card from './gift-card.png'
 
 
 export const assets = {
@@ -92,5 +98,11 @@ export const assets = {
     washing,
     handling,
     seasoning,
-    instagram
+    instagram,
+    time_frame,
+    approved,
+    to_do_list,
+    partial_refund,
+    personalized,
+    gift_card
 }

@@ -21,6 +21,7 @@ import Loader from "./pages/Loader";
 import { ShopContext } from "./context/ShopContext";
 import ForgotPassword from "./pages/ForgotPassword";
 import ShippingPolicy from "./pages/ShippingPolicy";
+import ReturnPolicy from "./pages/ReturnPolicy";
 
 const App = () => {
   const { isLoading } = useContext(ShopContext);
@@ -44,7 +45,8 @@ const App = () => {
           <Route path="/place-order" element={<PlaceOrder />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/policy" element={<ShippingPolicy />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/return-policy" element={<ReturnPolicy />} />
           {/* <Route path='/verify' element={<Verify />} /> */}
           <Route
             path="*"
