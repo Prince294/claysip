@@ -12,6 +12,8 @@ const Orders = ({ token }) => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([])
   const [products, setProducts] = useState([])
+  const [trackingId, setTrackingId] = useState([])
+  
 
   const fetchProducts = async () => {
     try {
@@ -30,6 +32,21 @@ const Orders = ({ token }) => {
     }
   }
 
+  const submitTrackingId = async (index)=>{
+    try {
+      const response = await axios.post(backendUrl + '/api/order/tracking_id', {orderId: orders[index]._id, tracking_id: trackingId[index]?.tracking_id}, { headers: { token } })
+      if (response.data.success) {
+        toast.success(response.data.message)
+        fetchAllOrders()
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error)
+    }
+  }
+
   const fetchAllOrders = async () => {
 
     if (!token) {
@@ -41,6 +58,11 @@ const Orders = ({ token }) => {
       const response = await axios.post(backendUrl + '/api/order/list', {}, { headers: { token } })
       if (response.data.success) {
         let allOrdersItem = []
+        setTrackingId(Array(parseInt(response.data.orders?.length)).fill({}).map((_, index)=> ({
+            tracking_id: response.data.orders[index]?.tracking_id ? response.data.orders[index]?.tracking_id : "",
+          })
+        ));
+
         await response.data.orders.map(async (order)=>{
           var {items, ...OtherKeys} = order;
           await items.forEach(async item => {
@@ -171,13 +193,24 @@ const Orders = ({ token }) => {
                 <p>Date : {new Date(order.date).toLocaleDateString()}</p>
               </div>
               <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-              <select onChange={(event)=>statusHandler(event,order._id)} value={order.status} className='p-2 font-semibold' onClick={(e)=> e.stopPropagation() }>
-                <option value="Order Placed">Order Placed</option>
-                <option value="Packing">Packing</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Out for delivery">Out for delivery</option>
-                <option value="Delivered">Delivered</option>
-              </select>
+              <div>
+                <select onChange={(event)=>statusHandler(event,order._id)} value={order.status} className='p-2 font-semibold' onClick={(e)=> e.stopPropagation() }>
+                  <option value="Order Placed">Order Placed</option>
+                  <option value="Packing">Packing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Out for delivery">Out for delivery</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+                <div className='mt-4' onClick={(e)=> e.stopPropagation() }>
+                  <input onChange={(e)=>{
+                    var ids = [...trackingId];
+                    ids[index]['tracking_id'] = e.target.value;
+                    setTrackingId(ids)
+
+                  }} value={trackingId[index]?.tracking_id} className='rounded-md w-full px-3 py-2 border border-gray-300 outline-none' type="text" placeholder='Enter Tracking Id' required />
+                  <button className='mt-2 w-full py-2 px-4 rounded-md text-white bg-black' onClick={()=>submitTrackingId(index)}> Submit </button>
+                </div>
+              </div>
             </div>
           ))
         }

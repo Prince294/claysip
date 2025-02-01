@@ -41,6 +41,7 @@ const Login = () => {
           otp
         });
         if (response.data.success) {
+          toast.success("Successfully signed up");
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
         } else {
@@ -52,6 +53,7 @@ const Login = () => {
           password,
         });
         if (response.data.success) {
+          toast.success("Successfully logged in");
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
         } else {

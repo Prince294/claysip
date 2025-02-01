@@ -26,6 +26,7 @@ const Orders = () => {
             item['payment'] = order.payment;
             item['paymentMethod'] = order.paymentMethod;
             item['date'] = order.date;
+            item['tracking_id'] = order?.tracking_id;
             var cartData = await gettingInformationFromCartData(item);
             item['items'] = cartData;
             allOrdersItem.push(item)
@@ -68,7 +69,7 @@ const Orders = () => {
         </div>
 
         <div>
-            {
+            {orderData.length ? 
               orderData.map((item,index) => (
                 <div key={index} className='py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
                     <div className='flex items-start gap-6 text-sm'>
@@ -84,17 +85,23 @@ const Orders = () => {
                           <p className='mt-1'>Payment: <span className=' text-gray-400'>{item.paymentMethod}</span></p>
                         </div>
                     </div>
-                    <div className='md:w-1/2 flex justify-between'>
+                    <div className='md:w-1/2 flex justify-between pr-10'>
                         <div className='flex items-center gap-2'>
                             <p className='min-w-2 h-2 rounded-full bg-green-500'></p>
                             <p className='text-sm md:text-base'>{item.status}</p>
                         </div>
-                        <a href="https://www.delhivery.com/tracking" target='_blank'>
-                          <button onClick={loadOrderData} className='border px-4 py-2 text-sm font-medium rounded-sm'>Track Order</button>
-                        </a>
+                        {item?.tracking_id ?
+                          <div>
+                            <p className='text-sm mb-2'>Tracking Id: <span className='font-bold text-base'>#{item?.tracking_id}</span></p>
+                            <a href="https://www.delhivery.com/tracking" target='_blank'>
+                              <button onClick={loadOrderData} className='border px-4 py-2 text-sm font-medium rounded-sm'>Track Order</button>
+                            </a>
+                          </div>
+                        : <></>}
                     </div>
                 </div>
-              ))
+              )) : 
+              <div className='mb-10 w-full text-center mt-4 text-xl'>No Order Found!</div>
             }
         </div>
     </div>

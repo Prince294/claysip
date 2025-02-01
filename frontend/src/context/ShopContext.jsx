@@ -94,6 +94,9 @@ const ShopContextProvider = (props) => {
         return new Promise((resolve, reject)=>{
             const tempData = [];
             for (const items in cartItem) {
+                if(typeof cartItem[items] !== "object"){
+                    continue;
+                }
                 for (const item in cartItem[items]) {
                     if (item !== 'main') {
                         for (const size in cartItem[items][item]) {

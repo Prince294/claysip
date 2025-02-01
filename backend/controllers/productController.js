@@ -199,7 +199,7 @@ const updateProduct = async (req, res) => {
 const listProducts = async (req, res) => {
     try {
         
-        const products = await productModel.find({});
+        const products = await productModel.find({is_deleted: false});
         
         const transformedProduct = products.map(item => {
             const { product_type_data, ...otherKeys } = item._doc || item;
@@ -229,6 +229,9 @@ const filterCategory = async (req, res) => {
     try {
         
         const result = await productModel.aggregate([
+            {
+                $match: { is_deleted: false }
+            },
             {
                 $group: {
                     _id: null,
@@ -263,7 +266,7 @@ const filterCategory = async (req, res) => {
 const removeProduct = async (req, res) => {
     try {
         
-        await productModel.findByIdAndDelete(req.body.id)
+        await productModel.findByIdAndUpdate(req.body.id, { is_deleted: true }, { new: true, runValidators: true })
         res.json({success:true,message:"Product Removed"})
 
     } catch (error) {

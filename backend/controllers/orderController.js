@@ -26,7 +26,7 @@ const placeOrder = async (req,res) => {
             paymentMethod:"COD",
             payment:false,
             date: Date.now()
-        }
+        }        
 
         const newOrder = new orderModel(orderData)
         await newOrder.save()
@@ -149,4 +149,20 @@ const updateStatus = async (req,res) => {
     }
 }
 
-export {verifyRazorpay ,placeOrder, placeOrderRazorpay, allOrders, userOrders, updateStatus}
+
+// update order tracking id from Admin Panel
+const updateTrackingId = async (req,res) => {
+    try {
+        
+        const { orderId, tracking_id } = req.body;
+
+        await orderModel.findByIdAndUpdate(orderId, { tracking_id })
+        res.json({success:true,message:'Status Updated'})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {verifyRazorpay ,placeOrder, placeOrderRazorpay, allOrders, userOrders, updateStatus, updateTrackingId}
