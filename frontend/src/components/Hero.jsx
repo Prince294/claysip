@@ -16,7 +16,7 @@ import { Autoplay } from 'swiper/modules';
 const Hero = () => {
   return (
 
-    <div className='bg-white overflow-hidden'>
+    <div className='bg-white overflow-hidden w-full'>
       <Swiper
         pagination={{
           dynamicBullets: true,
@@ -34,7 +34,7 @@ const Hero = () => {
           return(
 
         <SwiperSlide key={index}>
-          <div  className='flex flex-col sm:flex-row'>
+          <div  className='flex flex-col sm:flex-row w-full justify-center'>
             {/* Hero Left Side */}
             <div className='order-1 sm:order-0 w-full sm:w-1/2 flex items-center justify-center py-10 sm:py-0'>
               <div className='flex flex-col justify-center md:justify-start md:items-start'>
@@ -46,7 +46,7 @@ const Hero = () => {
               </div>
             </div>
             {/* Hero Right Side */}
-            <img className='order-0 sm:order-1 w-full sm:w-1/2' src={assets.hero_pot1} alt="" />
+            <img className='order-1 max-h-[450px] object-cover' src={assets.hero_pot1} alt="" />
           </div>
         </SwiperSlide>
          )

@@ -1,6 +1,6 @@
 import logo from './logo.png'
 import hero_img from './hero_img.png'
-import hero_pot1 from './pot1_image.jpg'
+import hero_pot1 from './pot1_image.png'
 import hero_pot2 from './pot2_image.jpg'
 import cart_icon from './cart_icon.png'
 import shoping_cart from './shoping_cart.svg'
