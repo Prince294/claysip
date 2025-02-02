@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 const PlaceOrder = () => {
 
     const [method, setMethod] = useState('cod');
+    const [razorPayResponse, setRazorPayResponse] = useState(false);
     const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, setIsLoading } = useContext(ShopContext);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -43,8 +44,9 @@ const PlaceOrder = () => {
 
                     const { data } = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, { headers: { token } })
                     if (data.success) {
+                        setRazorPayResponse(false);
                         setIsLoading(false);
-                        navigate('/orders')
+                        navigate('/order-complete', { state: { orderId: data.order_id } })
                         setCartItems({})
                     } else {
                         setIsLoading(false);
@@ -89,12 +91,16 @@ const PlaceOrder = () => {
 
 
                 case 'razorpay':
-
-                    const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } })
-                    if (responseRazorpay.data.success) {
-                        initPay(responseRazorpay.data.order)
+                    if(razorPayResponse){
+                        initPay(razorPayResponse)
                     } else {
-                        setIsLoading(false);
+                        const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } })
+                        if (responseRazorpay.data.success) {
+                            setRazorPayResponse(responseRazorpay.data.order);
+                            initPay(responseRazorpay.data.order)
+                        } else {
+                            setIsLoading(false);
+                        }
                     }
 
                     break;

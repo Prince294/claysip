@@ -195,6 +195,7 @@ const Orders = ({ token }) => {
               <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
               <div>
                 <select onChange={(event)=>statusHandler(event,order._id)} value={order.status} className='p-2 font-semibold' onClick={(e)=> e.stopPropagation() }>
+                  <option value="Canceled">Canceled</option>
                   <option value="Order Placed">Order Placed</option>
                   <option value="Packing">Packing</option>
                   <option value="Shipped">Shipped</option>

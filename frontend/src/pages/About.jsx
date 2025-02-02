@@ -14,19 +14,21 @@ const About = () => {
     <div className='py-16 pb-0 md:pb-6'>
       <div className='container'>
 
-        <div className='max-w-[900px] mx-auto'>
+        <div className='max-w-[1050px] mx-auto'>
           <div className='text-center'>
             <Title text1={'about'} text2={'us'} />
             <img className="w-[150px] mx-auto" src={assets.underline} alt="" />
           </div>
 
-          <div className='my-10 flex flex-col md:flex-row gap-16'>
-            <img className='w-full md:max-w-[450px] rounded-md' src={assets.about_img} alt="" />
-            <div className='flex flex-col justify-center gap-6 md:w-2/4 text-secondary'>
-              <p>Claysip was born out of a passion for innovation and a desire to revolutionize the way people shop online. Our journey began with a simple idea: to provide a platform where customers can easily discover, explore, and purchase a wide range of products from the comfort of their homes.</p>
-              <p>Since our inception, we've worked tirelessly to curate a diverse selection of high-quality products that cater to every taste and preference. From fashion and beauty to electronics and home essentials, we offer an extensive collection sourced from trusted brands and suppliers.</p>
+          <div className='my-10 flex flex-col md:flex-row gap-12 items-start content-center'>
+            <img className='w-full max-w-[460px] max-h-[800px] rounded-md' src={assets.about_img} alt="" />
+            <div className='flex flex-col justify-center gap-4 md:w-2/4 text-secondary'>
+              <p>At Claysip, we believe in bringing sustainability and tradition back to modern living. Our mission is to redefine the way people enjoy their beverages—by offering eco-friendly, handcrafted clay products that enhance taste, preserve health, and promote a greener planet.</p>
+              <p>Rooted in heritage yet inspired by innovation, Claysip combines the artistry of skilled potters with contemporary design to create 100% natural, biodegradable, and chemical-free clay drinkware. Every sip from our products is a step toward sustainability, reducing plastic waste while reconnecting you with the purity of nature.</p>
+              <p>Join us on our journey to sip responsibly, embrace sustainability, and celebrate the timeless charm of earthenware.</p>
               <b className='text-secondary text-xl font-semibold'>Our Mission</b>
-              <p>Our mission at Claysip is to empower customers with choice, convenience, and confidence. We're dedicated to providing a seamless shopping experience that exceeds expectations, from browsing and ordering to delivery and beyond.</p>
+              <p>To inspire a shift towards sustainable living by offering eco-friendly, handcrafted clay drinkware that enhances the drinking experience while protecting the environment. We are committed to preserving traditional craftsmanship, reducing plastic waste, and promoting healthier, chemical-free choices for a better tomorrow.</p>
+              <p>Claysip - Sip Naturally, Live Sustainably.</p>
             </div>
           </div>
         </div>

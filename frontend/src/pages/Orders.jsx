@@ -3,6 +3,7 @@ import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title';
 import axios from 'axios';
 import { assets } from '../assets/assets';
+import { toast } from 'react-toastify';
 
 const Orders = () => {
 
@@ -23,6 +24,7 @@ const Orders = () => {
         await response.data.orders.map(async (order)=>{
           await order.items.forEach(async item => {
             item['status'] = order.status;
+            item['_id'] = order._id;
             item['payment'] = order.payment;
             item['paymentMethod'] = order.paymentMethod;
             item['date'] = order.date;
@@ -38,6 +40,24 @@ const Orders = () => {
       
     } catch (error) {
       
+    }
+  }
+
+  const cancelOrder = async (order_id) => {
+    try {
+      if (!token) {
+        return null
+      }
+
+      const response = await axios.post(backendUrl + '/api/order/cancel-order',{orderId: order_id},{headers:{token}})
+      if (response.data.success) {
+        loadOrderData()
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
 
@@ -85,19 +105,21 @@ const Orders = () => {
                           <p className='mt-1'>Payment: <span className=' text-gray-400'>{item.paymentMethod}</span></p>
                         </div>
                     </div>
-                    <div className='md:w-1/2 flex justify-between pr-10'>
-                        <div className='flex items-center gap-2'>
-                            <p className='min-w-2 h-2 rounded-full bg-green-500'></p>
+                    <div className='md:w-1/2 flex justify-between items-center pr-16'>
+                        <div className='flex items-start gap-2 flex-col -ml-16'>
                             <p className='text-sm md:text-base'>{item.status}</p>
+                            <p className='mt-1'>Payment Status: <span className='text-gray-600 font-medium'>{!item.payment ? "Pending" : 'Payment Success'}</span></p>
                         </div>
                         {item?.tracking_id ?
-                          <div>
-                            <p className='text-sm mb-2'>Tracking Id: <span className='font-bold text-base'>#{item?.tracking_id}</span></p>
+                          <div className='flex flex-col gap-2'>
+                            <p className='text-sm'>Tracking Id: <span className='font-bold text-base'>#{item?.tracking_id}</span></p>
                             <a href="https://www.delhivery.com/tracking" target='_blank'>
                               <button onClick={loadOrderData} className='border px-4 py-2 text-sm font-medium rounded-sm'>Track Order</button>
                             </a>
+                            {item.status != "Cancelled" && item.status == "Order Placed" ? <button onClick={()=>cancelOrder(item._id)} className='border px-4 py-2 bg-orange-800 hover:bg-orange-900 text-white text-sm font-medium rounded-sm'>Cancel Order</button> : <></>}
                           </div>
                         : <></>}
+                        {!item?.tracking_id && item.status != "Cancelled" && item.status == "Order Placed" ? <button onClick={()=>cancelOrder(item._id)} className='border px-4 py-2 bg-orange-800 hover:bg-orange-900 text-white text-sm font-medium rounded-sm'>Cancel Order</button> : <></>}
                     </div>
                 </div>
               )) : 
