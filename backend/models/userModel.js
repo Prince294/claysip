@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     is_verified: { type: Boolean, default: false },
-    cartData: { type: Object, default: {} }
+    cartData: { type: Object, default: {} },
+    delivery_pin_code: { type: String },
 }, { minimize: false })
 
 const userModel = mongoose.models.user || mongoose.model('user',userSchema);

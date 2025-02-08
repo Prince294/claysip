@@ -16,6 +16,7 @@ const Add = ({token}) => {
   const [description, setDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [weight, setWeight] = useState("");
   const [category, setCategory] = useState("Glasses");
   const [bestseller, setBestseller] = useState(false);
 
@@ -85,6 +86,7 @@ const Add = ({token}) => {
       formData.append("description",description)
       formData.append("full_description",fullDescription)
       formData.append("price",price)
+      formData.append("weight",weight)
       formData.append("category",category)
       formData.append("no_of_product_types",productTypes)
 
@@ -174,6 +176,11 @@ const Add = ({token}) => {
             <div>
               <p className='mb-2'>Product Price</p>
               <input onChange={(e) => setPrice(e.target.value)} value={price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" placeholder='25' />
+            </div>
+
+            <div>
+              <p className='mb-2'>Product Weight (in grams)</p>
+              <input onChange={(e) => setWeight(e.target.value)} value={weight} className='w-full px-3 py-2 sm:w-[180px]' type="Number" placeholder='1000' />
             </div>
 
         </div>

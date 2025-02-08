@@ -317,4 +317,41 @@ const sendEmail = async (type, email, order_id, tracking_id) => {
     }
 }
 
-export {verifyRazorpay ,placeOrder, placeOrderRazorpay, allOrders, userOrders, updateStatus, updateTrackingId, cancelOrder}
+// get delivery charge
+const getDeliveryCharge = async (req,res) => {
+    try {
+        
+        const { pinCode, weight, userId } = req.body;
+
+        if(pinCode < 100000 || pinCode > 999999 || isNaN(pinCode)){
+            res.json({success:false,message:"Invalid Pincode"})
+        }
+
+        const url = `${process.env.DELHIVERY_ENDPOINT}/c/api/pin-codes/json/?filter_codes=${pinCode}`;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${process.env.DELHIVERY_TOKEN}`
+        };
+        const response = await axios.get(url, { headers });
+        const data = response.data;
+
+        if(!data.delivery_codes.length){
+            res.json({success:false,message:'Delivery is not available on your location'})
+        } else {
+            const url1 = `${process.env.DELHIVERY_ENDPOINT}/api/kinko/v1/invoice/charges/.json?md=S&ss=Delivered&d_pin=${pinCode}&o_pin=245304&cgm=${weight}&pt=Pre-paid&cod=0`;
+            const chargeResp = await axios.get(url1, { headers });
+
+            let data_to_send = data.delivery_codes[0].postal_code;
+            data_to_send['total_amount'] = chargeResp.data[0].total_amount;
+
+            await userModel.findByIdAndUpdate(userId, {delivery_pin_code: pinCode})
+
+            res.json({success:true,data: data_to_send})
+        }
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {verifyRazorpay ,placeOrder, placeOrderRazorpay, allOrders, userOrders, updateStatus, updateTrackingId, cancelOrder, getDeliveryCharge}

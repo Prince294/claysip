@@ -97,7 +97,7 @@ const getUserCart = async (req,res) => {
         userData.markModified('cartData');
         await userData.save();
 
-        res.json({ success: true, cartData })
+        res.json({ success: true, cartData, pinCode: userData?.delivery_pin_code })
 
     } catch (error) {
         console.log(error)

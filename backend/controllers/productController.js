@@ -8,7 +8,7 @@ import fs from "fs"
 const addProduct = async (req, res) => {
     try {
 
-        const { name, description, price, category, no_of_product_types, product_type_data, bestseller, full_description } = req.body
+        const { name, description, price, weight, category, no_of_product_types, product_type_data, bestseller, full_description } = req.body
 
         const image1 = req.files.image1 && req.files.image1[0]
         const image2 = req.files.image2 && req.files.image2[0]
@@ -75,6 +75,7 @@ const addProduct = async (req, res) => {
             full_description,
             category,
             price: Number(price),
+            weight: Number(weight),
             bestseller: bestseller === "true" ? true : false,
             no_of_product_types: no_of_product_types,
             product_type_data: productTypeData,
@@ -97,7 +98,7 @@ const addProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
 
-        const { _id, name, description, price, category, no_of_product_types, product_type_data, bestseller, full_description, images } = req.body
+        const { _id, name, description, price, weight, category, no_of_product_types, product_type_data, bestseller, full_description, images } = req.body
 
         let parseImages = JSON.parse(images);
 
@@ -178,6 +179,7 @@ const updateProduct = async (req, res) => {
             full_description,
             category,
             price: Number(price),
+            weight: Number(weight),
             bestseller: bestseller === "true" ? true : false,
             no_of_product_types: no_of_product_types,
             product_type_data: productTypeData,

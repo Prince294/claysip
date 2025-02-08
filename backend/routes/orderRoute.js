@@ -1,5 +1,5 @@
 import express from 'express'
-import {placeOrder, placeOrderRazorpay, allOrders, userOrders, updateStatus, verifyRazorpay, updateTrackingId, cancelOrder} from '../controllers/orderController.js'
+import {placeOrder, placeOrderRazorpay, allOrders, userOrders, updateStatus, verifyRazorpay, updateTrackingId, cancelOrder, getDeliveryCharge} from '../controllers/orderController.js'
 import adminAuth  from '../middleware/adminAuth.js'
 import authUser from '../middleware/auth.js'
 
@@ -17,6 +17,7 @@ orderRouter.post('/razorpay',authUser,placeOrderRazorpay)
 // User Feature 
 orderRouter.post('/userorders',authUser,userOrders)
 orderRouter.post('/cancel-order',authUser,cancelOrder)
+orderRouter.post('/delivery-charge',authUser,getDeliveryCharge)
 
 // verify payment
 orderRouter.post('/verifyRazorpay',authUser, verifyRazorpay)

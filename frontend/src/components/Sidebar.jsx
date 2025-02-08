@@ -2,15 +2,27 @@ import React, { useContext, useState, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from '../assets/assets';
 import { Link, NavLink } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
-  const { getCartAmount, cartItems, products, currency, updateQuantity, sidebar, toggleSidebar, token } = useContext(ShopContext);
+  const { getCartAmount, cartItems, products, currency, updateQuantity, sidebar, toggleSidebar, token, deliveryPinCode, checkPinCode } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
+  const [pinCode, setPinCode] = useState("");
+  const [pinCodeVerify, setPinCodeVerify] = useState(false);
 
   useEffect(() => {
     settingCartData();
   }, [cartItems, products]);
+
+  useEffect(() => {
+    if(deliveryPinCode){
+      setPinCodeVerify(true);
+      setPinCode(deliveryPinCode)
+    } else {
+      setPinCodeVerify(false);
+    }
+  }, [deliveryPinCode]);
 
   const settingCartData = () => {
     if (products.length > 0) {
@@ -59,6 +71,11 @@ const Sidebar = () => {
       setCartData(tempData);
     }
   }
+  
+  const handlePinCode = async()=>{
+    const status = await checkPinCode(pinCode);
+    setPinCodeVerify(status);
+  }
 
   return (
     <div
@@ -99,14 +116,27 @@ const Sidebar = () => {
           Cart is empty!
         </div>}
       </div>
+      
+      <div className="mt-auto mb-4 flex gap-2 items-center">
+        <input
+          onChange={(e) => setPinCode(e.target.value)}
+          value={pinCode}
+          type="number"
+          className="w-full border-1 border-primary focus:ring-primary rounded-lg focus:border-primary rounded-1 px-3 text-[13px] py-1"
+          placeholder="Enter Pin Code"
+        /> 
+        <button className='rounded-lg bg-black text-white px-8 py-2 text-sm hover:bg-primary uppercase' onClick={handlePinCode}>Check</button>
+      </div>
 
-      {token ? <Link to='/cart' className="mt-auto">
-        <button className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase' onClick={() => toggleSidebar(false)}>Proceed to checkout</button>
-      </Link> : 
-      <Link to='/login' className="mt-auto">
-        <button className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase' onClick={() => toggleSidebar(false)}>Proceed to checkout</button>
-      </Link>}
-
+      <Link to={!pinCodeVerify ? "#" : token ? '/cart' : '/login'}>
+        <button className={`rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase ${!pinCodeVerify ? "bg-gray-400 hover:bg-gray-400 cursor-default" : ""}`} onClick={() => {
+            if(pinCodeVerify) {
+              toggleSidebar(false)
+            } else {
+              toast.error("Invalid Pin Code");
+            }
+          }}>Proceed to checkout</button>
+      </Link>
     </div>
   );
 };

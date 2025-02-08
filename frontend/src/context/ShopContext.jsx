@@ -8,8 +8,8 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => {
 
     const currency = '₹ ';
-    const delivery_fee = 10;
     const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const [delivery_fee, setDeliveryFee] = useState(false);
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
@@ -18,6 +18,8 @@ const ShopContextProvider = (props) => {
     const [token, setToken] = useState('')
     const [sidebar, setSidebar] = useState(false)
     const [userData, setUserData] = useState([])
+    const [cartWeight, setCartWeight] = useState("")
+    const [deliveryPinCode, setDeliveryPinCode] = useState(false)
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -219,6 +221,25 @@ const ShopContextProvider = (props) => {
         return totalAmount;
     }
 
+    const getCartWeight = () => {
+        let totalWeight = 0;
+        for (const items in cartItems) {
+            for (const item in cartItems[items]) {
+                for (const size in cartItems[items][item]) {
+                    try {
+                        let itemInfo = products.find((product) => product._id === items);
+                        if (cartItems[items][item][size] > 0) {
+                            totalWeight += itemInfo.weight * cartItems[items][item][size];
+                        }
+                    } catch (error) {
+                        
+                    }
+                }
+            }
+        }
+        setCartWeight(totalWeight);
+    }
+
     const getProductsData = async () => {
         try {
 
@@ -258,6 +279,9 @@ const ShopContextProvider = (props) => {
             const response = await axios.post(backendUrl + '/api/cart/get',{},{headers:{token}})
             if (response.data.success) {
                 setCartItems(response.data.cartData)
+                if(response.data?.pinCode){
+                    setDeliveryPinCode(response.data.pinCode)
+                }
             }
         } catch (error) {
             console.log(error)
@@ -274,6 +298,35 @@ const ShopContextProvider = (props) => {
         } catch (error) {
             console.log(error)
             toast.error(error.message)
+        }
+    }
+
+    const checkPinCode = async(pinCode, refresh = false)=>{
+        if(pinCode < 100000 || pinCode > 999999 || isNaN(pinCode)){
+            if(!refresh){
+                toast.error("Invalid Pincode");
+            }
+            return false;
+        }
+        try {
+            const response = await axios.post(backendUrl + '/api/order/delivery-charge',{pinCode, weight: cartWeight},{headers:{token}});
+            if (response.data.success) {
+                if(!refresh){
+                    toast.success("Items are deliverable on your location");
+                }
+                setDeliveryFee(response.data.data.total_amount);
+                setIsLoading(false);
+                return true;
+            } else {
+                toast.error(response.data.message);
+                setIsLoading(false);
+                return false;
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+            setIsLoading(false);
+            return false;
         }
     }
 
@@ -298,13 +351,26 @@ const ShopContextProvider = (props) => {
         }
     }, [token])
 
+    useEffect(() => {
+        if (cartItems) {
+            getCartWeight()
+        }
+    }, [cartItems])
+
+    useEffect(() => {
+        if (cartWeight && deliveryPinCode) {
+            setIsLoading(true);
+            checkPinCode(deliveryPinCode, true);
+        }
+    }, [cartWeight, deliveryPinCode])
+
     const value = {
         products, currency, delivery_fee,
         search, setSearch, showSearch, setShowSearch,
         cartItems, addToCart,setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
-        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData, setIsLoading, isLoading
+        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData, setIsLoading, isLoading, getCartWeight, setDeliveryFee, deliveryPinCode, checkPinCode
     }
 
     return (
