@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
@@ -10,7 +10,8 @@ const PlaceOrder = () => {
 
     const [method, setMethod] = useState('cod');
     const [razorPayResponse, setRazorPayResponse] = useState(false);
-    const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, setIsLoading } = useContext(ShopContext);
+    const [deliveryFeeSet, setDeliveryFeeSet ] = useState(false);
+    const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, setIsLoading, setDeliveryFee } = useContext(ShopContext);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -116,6 +117,23 @@ const PlaceOrder = () => {
         }
     }
 
+    useEffect(() => {
+        handleDeliveryFee();
+    }, [method, delivery_fee])
+    
+    const handleDeliveryFee = ()=>{
+        if(method == "cod"){
+            if(!deliveryFeeSet && delivery_fee){
+                setDeliveryFeeSet(true)
+                setDeliveryFee((prev) => (prev + 50));
+            }
+        } else {
+            if(deliveryFeeSet && delivery_fee){
+                setDeliveryFeeSet(false)
+                setDeliveryFee((prev) => (prev - 50));
+            }
+        }
+    }
 
     return (
         <div className="py-16">
