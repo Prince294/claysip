@@ -18,9 +18,7 @@ export const decryptData = (encryptedData) => {
 };
 
 export const decryptMiddleware = (req, res, next) => {
-    console.log("req.body", req.body)
-    if (Object.keys(req.body).length !== 0) {
-        console.log("req.body", req.body.encryptedData)
+    if (Object.keys(req.body).length !== 0 && req.body.encryptedData) {
         req.body = decryptData(req.body.encryptedData);
         if (!req.body) {
             return res.status(400).json({ error: "Invalid encrypted data" });
