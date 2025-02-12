@@ -12,6 +12,7 @@ const Product = () => {
   const [image, setImage] = useState('')
   const [productType, setProductType] = useState('')
   const [size, setSize] = useState('')
+  const [expand, setExpand] = useState(false)
 
   const fetchProductData = async () => {
 
@@ -98,8 +99,7 @@ const Product = () => {
               <p className='pl-2'>(122)</p>
           </div> */}
               <p className='mt-5 text-3xl font-medium'>{currency}{productData?.price}</p>
-              {/* <p className='text-base text-secondary capitalize font-medium'>{productData.description}</p> */}
-              <p className='text-sm text-secondary capitalize mt-2'>{productData?.description?.length < 250 ? productData?.description : productData?.description.substring(0,250) + "..."}</p>
+              {<p className='text-sm text-secondary capitalize mt-2'>{productData?.description?.length < 250 || expand ? productData?.description : productData?.description.substring(0,250) + "..."}  <span className='text-blue-500 cursor-pointer hover:text-blue-700' onClick={()=> setExpand(prev => !prev)}>{productData?.description?.length > 250 && expand ? "Show Less" : "Show More"}</span></p>}
 
 
               <div className='flex flex-col gap-4 my-6'>
