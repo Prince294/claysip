@@ -3,7 +3,6 @@ import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const PlaceOrder = () => {
@@ -11,7 +10,7 @@ const PlaceOrder = () => {
     const [method, setMethod] = useState('cod');
     const [razorPayResponse, setRazorPayResponse] = useState(false);
     const [deliveryFeeSet, setDeliveryFeeSet ] = useState(false);
-    const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, setIsLoading, setDeliveryFee } = useContext(ShopContext);
+    const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, setIsLoading, setDeliveryFee, cod_charge } = useContext(ShopContext);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -43,7 +42,7 @@ const PlaceOrder = () => {
                 // console.log(response)
                 try {
 
-                    const { data } = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, { headers: { token } })
+                    const { data } = await http.post(backendUrl + '/api/order/verifyRazorpay', response, { headers: { token } })
                     if (data.success) {
                         setRazorPayResponse(false);
                         setIsLoading(false);
@@ -78,7 +77,7 @@ const PlaceOrder = () => {
 
                 // API Calls for COD
                 case 'cod':
-                    const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } })
+                    const response = await http.post(backendUrl + '/api/order/place', orderData, { headers: { token } })
                     if (response.data.success) {
                         setIsLoading(false);
                         setCartItems({})
@@ -95,7 +94,7 @@ const PlaceOrder = () => {
                     if(razorPayResponse){
                         initPay(razorPayResponse)
                     } else {
-                        const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } })
+                        const responseRazorpay = await http.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } })
                         if (responseRazorpay.data.success) {
                             setRazorPayResponse(responseRazorpay.data.order);
                             initPay(responseRazorpay.data.order)
@@ -125,12 +124,12 @@ const PlaceOrder = () => {
         if(method == "cod"){
             if(!deliveryFeeSet && delivery_fee){
                 setDeliveryFeeSet(true)
-                setDeliveryFee((prev) => (prev + 50));
+                setDeliveryFee((prev) => (prev + cod_charge));
             }
         } else {
             if(deliveryFeeSet && delivery_fee){
                 setDeliveryFeeSet(false)
-                setDeliveryFee((prev) => (prev - 50));
+                setDeliveryFee((prev) => (prev - cod_charge));
             }
         }
     }
@@ -162,32 +161,28 @@ const PlaceOrder = () => {
                         <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="number" placeholder='Phone' />
                     </div>
 
-                    <CartTotal />
+                    <CartTotal type={method} />
                    
-                   
-
-
-                        <div className='payment-method'>
-                            <div className='mb-3'>
-                                <Title text1={'payment'} text2={'method'} />
+                    <div className='payment-method'>
+                        <div className='mb-3'>
+                            <Title text1={'payment'} text2={'method'} />
+                        </div>
+                        {/* --------------- Payment Method Selection ------------- */}
+                        <div className='flex gap-3 flex-col xl:flex-row'>
+                            <div onClick={() => setMethod('razorpay')} className='flex-1 flex items-center gap-3 border rounded-sm p-3 cursor-pointer'>
+                                <p className={` flex-shrink-0 w-4 h-4 border rounded-full ${method === 'razorpay' ? 'bg-primary border-primary' : ''}`}></p>
+                                <img className='h-5' src={assets.razorpay_logo} alt="" />
                             </div>
-                            {/* --------------- Payment Method Selection ------------- */}
-                            <div className='flex gap-3 flex-col xl:flex-row'>
-                                <div onClick={() => setMethod('razorpay')} className='flex-1 flex items-center gap-3 border rounded-sm p-3 cursor-pointer'>
-                                    <p className={` flex-shrink-0 w-4 h-4 border rounded-full ${method === 'razorpay' ? 'bg-primary border-primary' : ''}`}></p>
-                                    <img className='h-5' src={assets.razorpay_logo} alt="" />
-                                </div>
-                                <div onClick={() => setMethod('cod')} className='flex-1 flex items-center gap-3 border p-3 cursor-pointer'>
-                                    <p className={`flex-shrink-0 w-4 h-4 border rounded-full ${method === 'cod' ? 'bg-primary border-primary' : ''}`}></p>
-                                    <p className='text-secondary text-sm font-medium'>CASH ON DELIVERY</p>
-                                </div>
-                            </div>
-
-                            <div className='w-full text-end mt-8'>
-                                <button type='submit' className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase'>PLACE ORDER</button>
+                            <div onClick={() => setMethod('cod')} className='flex-1 flex items-center gap-3 border p-3 cursor-pointer'>
+                                <p className={`flex-shrink-0 w-4 h-4 border rounded-full ${method === 'cod' ? 'bg-primary border-primary' : ''}`}></p>
+                                <p className='text-secondary text-sm font-medium'>CASH ON DELIVERY</p>
                             </div>
                         </div>
-                    
+
+                        <div className='w-full text-end mt-8'>
+                            <button type='submit' className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase'>PLACE ORDER</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

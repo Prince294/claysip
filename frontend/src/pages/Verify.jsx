@@ -4,7 +4,7 @@ import { ShopContext } from '../context/ShopContext'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import {toast} from 'react-toastify'
-import axios from 'axios'
+import http from '../services/utility'
 
 const Verify = () => {
 
@@ -21,7 +21,7 @@ const Verify = () => {
                 return null
             }
 
-            const response = await axios.post(backendUrl + '/api/order/verifyStripe', { success, orderId }, { headers: { token } })
+            const response = await http.post(backendUrl + '/api/order/verifyStripe', { success, orderId }, { headers: { token } })
 
             if (response.data.success) {
                 setCartItems({})

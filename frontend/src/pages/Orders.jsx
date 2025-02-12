@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title';
-import axios from 'axios';
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify';
+import http from '../services/utility';
 
 const Orders = () => {
 
@@ -18,7 +18,7 @@ const Orders = () => {
         return null
       }
 
-      const response = await axios.post(backendUrl + '/api/order/userorders',{},{headers:{token}})
+      const response = await http.post(backendUrl + '/api/order/userorders',{},{headers:{token}})
       if (response.data.success) {
         let allOrdersItem = []
         await response.data.orders.map(async (order)=>{
@@ -49,7 +49,7 @@ const Orders = () => {
         return null
       }
 
-      const response = await axios.post(backendUrl + '/api/order/cancel-order',{orderId: order_id},{headers:{token}})
+      const response = await http.post(backendUrl + '/api/order/cancel-order',{orderId: order_id},{headers:{token}})
       if (response.data.success) {
         loadOrderData()
         toast.success(response.data.message);

@@ -6,6 +6,7 @@ import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
 import orderRouter from './routes/orderRoute.js'
+import { decryptMiddleware, encryptMiddleware } from "./middleware/encryptionHelper.js";
 
 // App Config
 const app = express()
@@ -15,6 +16,9 @@ connectDB()
 // middlewares
 app.use(express.json())
 app.use(cors())
+app.use(express.urlencoded({ extended: true }));
+app.use(decryptMiddleware);
+app.use(encryptMiddleware);
 
 // api endpoints
 app.use('/api/user',userRouter)

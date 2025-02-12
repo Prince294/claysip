@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import http from "../services/utility";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
@@ -33,7 +33,7 @@ const Login = () => {
     event.preventDefault();
     try {
       if (currentState === "Sign Up") {
-        const response = await axios.post(backendUrl + "/api/user/register", {
+        const response = await http.post(backendUrl + "/api/user/register", {
           name,
           phone,
           email,
@@ -48,7 +48,7 @@ const Login = () => {
           toast.error(response.data.message);
         }
       } else {
-        const response = await axios.post(backendUrl + "/api/user/login", {
+        const response = await http.post(backendUrl + "/api/user/login", {
           email,
           password,
         });
@@ -72,7 +72,7 @@ const Login = () => {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post(backendUrl + "/api/user/generate-otp", {
+      const response = await http.post(backendUrl + "/api/user/generate-otp", {
         email,
         type: "signup"
       });

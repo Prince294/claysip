@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import http from "../services/utility";
 
 const ForgotPassword = () => {
   const [currentState, setCurrentState] = useState("Forgot Password");
@@ -30,7 +30,7 @@ const ForgotPassword = () => {
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-        const response = await axios.post(backendUrl + "/api/user/forgot-password", {
+        const response = await http.post(backendUrl + "/api/user/forgot-password", {
           email,
           password,
           otp
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post(backendUrl + "/api/user/generate-otp", {
+      const response = await http.post(backendUrl + "/api/user/generate-otp", {
         email,
         type: "forgot-password"
       });

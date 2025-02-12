@@ -324,7 +324,7 @@ const getDeliveryCharge = async (req,res) => {
         const { pinCode, weight, userId } = req.body;
 
         if(pinCode < 100000 || pinCode > 999999 || isNaN(pinCode)){
-            res.json({success:false,message:"Invalid Pincode"})
+            return res.json({success:false,message:"Invalid Pincode"})
         }
 
         const url = `${process.env.DELHIVERY_ENDPOINT}/c/api/pin-codes/json/?filter_codes=${pinCode}`;
@@ -336,7 +336,7 @@ const getDeliveryCharge = async (req,res) => {
         const data = response.data;
 
         if(!data.delivery_codes.length){
-            res.json({success:false,message:'Delivery is not available on your location'})
+            return res.json({success:false,message:'Delivery is not available on your location'})
         } else {
             const url1 = `${process.env.DELHIVERY_ENDPOINT}/api/kinko/v1/invoice/charges/.json?md=S&ss=Delivered&d_pin=${pinCode}&o_pin=245304&cgm=${weight}&pt=Pre-paid&cod=0`;
             const chargeResp = await axios.get(url1, { headers });
@@ -346,7 +346,7 @@ const getDeliveryCharge = async (req,res) => {
 
             await userModel.findByIdAndUpdate(userId, {delivery_pin_code: pinCode})
 
-            res.json({success:true,data: data_to_send})
+            return res.json({success:true,data: data_to_send})
         }
     } catch (error) {
         console.log(error)

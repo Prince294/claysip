@@ -1,13 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import http from "../services/utility";
 
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
 
     const currency = '₹ ';
+    const cod_charge = 40;
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [delivery_fee, setDeliveryFee] = useState(false);
     const [search, setSearch] = useState('');
@@ -81,8 +82,7 @@ const ShopContextProvider = (props) => {
 
         if (token) {
             try {
-
-                await axios.post(backendUrl + '/api/cart/add', { itemId, product_type, size }, { headers: { token } })
+                await http.post(backendUrl + '/api/cart/add', { itemId, product_type, size }, { headers: { token } })
                 getUserCart(token);
             } catch (error) {
                 console.log(error)
@@ -178,7 +178,7 @@ const ShopContextProvider = (props) => {
         if (token) {
             try {
 
-                await axios.post(backendUrl + '/api/cart/update', { itemId, product_type, size, quantity }, { headers: { token } })
+                await http.post(backendUrl + '/api/cart/update', { itemId, product_type, size, quantity }, { headers: { token } })
                 getUserCart(token);
             } catch (error) {
                 console.log(error)
@@ -243,7 +243,7 @@ const ShopContextProvider = (props) => {
     const getProductsData = async () => {
         try {
 
-            const response = await axios.get(backendUrl + '/api/product/list')
+            const response = await http.get(backendUrl + '/api/product/list')
             if (response.data.success) {
                 setProducts(response.data.products.reverse())
             } else {
@@ -260,7 +260,7 @@ const ShopContextProvider = (props) => {
     const getFiltersData = async () => {
         try {
 
-            const response = await axios.get(backendUrl + '/api/product/filter-category')
+            const response = await http.get(backendUrl + '/api/product/filter-category')
             if (response.data.success) {
                 setFilters(response.data)
             } else {
@@ -276,7 +276,7 @@ const ShopContextProvider = (props) => {
     const getUserCart = async ( token ) => {
         try {
             
-            const response = await axios.post(backendUrl + '/api/cart/get',{},{headers:{token}})
+            const response = await http.post(backendUrl + '/api/cart/get',{},{headers:{token}})
             if (response.data.success) {
                 setCartItems(response.data.cartData)
                 if(response.data?.pinCode){
@@ -291,7 +291,7 @@ const ShopContextProvider = (props) => {
 
     const getUserProfile = async () => {
         try {
-            const response = await axios.get(backendUrl + '/api/user/user-data',{headers:{token}})
+            const response = await http.get(backendUrl + '/api/user/user-data',{headers:{token}})
             if (response.data.success) {
                 setUserData(response.data.data)
             }
@@ -309,7 +309,7 @@ const ShopContextProvider = (props) => {
             return false;
         }
         try {
-            const response = await axios.post(backendUrl + '/api/order/delivery-charge',{pinCode, weight: cartWeight},{headers:{token}});
+            const response = await http.post(backendUrl + '/api/order/delivery-charge',{pinCode, weight: cartWeight},{headers:{token}});
             if (response.data.success) {
                 if(!refresh){
                     toast.success("Items are deliverable on your location");
@@ -370,7 +370,7 @@ const ShopContextProvider = (props) => {
         cartItems, addToCart,setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
-        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData, setIsLoading, isLoading, getCartWeight, setDeliveryFee, deliveryPinCode, checkPinCode
+        setToken, token, filters, toggleSidebar, sidebar, userData, gettingInformationFromCartData, setIsLoading, isLoading, getCartWeight, setDeliveryFee, deliveryPinCode, checkPinCode, cod_charge
     }
 
     return (
