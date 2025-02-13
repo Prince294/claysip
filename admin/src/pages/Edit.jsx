@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import {assets} from '../assets/assets'
-import axios from 'axios'
 import { backendUrl } from '../App'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
+import http from '../services/utility'
 
 const Edit = ({token}) => {
   const navigate = useNavigate();
@@ -146,7 +146,7 @@ const Edit = ({token}) => {
       image3 && typeof image3 !== 'string' && formData.append("image3",image3)
       image4 && typeof image4 !== 'string' && formData.append("image4",image4)
 
-      const response = await axios.post(backendUrl + "/api/product/update",formData,{headers:{token}})
+      const response = await http.post(backendUrl + "/api/product/update",formData,{headers:{token}})
 
       if (response.data.success) {
         toast.success(response.data.message)

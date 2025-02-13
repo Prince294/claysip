@@ -1,10 +1,10 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import FullScreenAlert from './FullScreenAlert'
 import { assets } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import http from '../services/utility'
 
 const List = ({ token }) => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const List = ({ token }) => {
   const fetchList = async () => {
     try {
 
-      const response = await axios.get(backendUrl + '/api/product/list')
+      const response = await http.get(backendUrl + '/api/product/list')
       if (response.data.success) {
         setList(response.data.products.reverse());
       }
@@ -33,7 +33,7 @@ const List = ({ token }) => {
   const removeProduct = async (id) => {
     try {
 
-      const response = await axios.post(backendUrl + '/api/product/remove', { id }, { headers: { token } })
+      const response = await http.post(backendUrl + '/api/product/remove', { id }, { headers: { token } })
 
       if (response.data.success) {
         toast.success(response.data.message)

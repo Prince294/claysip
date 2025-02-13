@@ -1,11 +1,11 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import axios from 'axios'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import http from '../services/utility'
 
 
 const Orders = ({ token }) => {
@@ -18,7 +18,7 @@ const Orders = ({ token }) => {
   const fetchProducts = async () => {
     try {
 
-      const response = await axios.get(backendUrl + '/api/product/list')
+      const response = await http.get(backendUrl + '/api/product/list')
       if (response.data.success) {
         setProducts(response.data.products.reverse());
       }
@@ -34,7 +34,7 @@ const Orders = ({ token }) => {
 
   const submitTrackingId = async (index)=>{
     try {
-      const response = await axios.post(backendUrl + '/api/order/tracking_id', {orderId: orders[index]._id, tracking_id: trackingId[index]?.tracking_id}, { headers: { token } })
+      const response = await http.post(backendUrl + '/api/order/tracking_id', {orderId: orders[index]._id, tracking_id: trackingId[index]?.tracking_id}, { headers: { token } })
       if (response.data.success) {
         toast.success(response.data.message)
         fetchAllOrders()
@@ -55,7 +55,7 @@ const Orders = ({ token }) => {
 
     try {
 
-      const response = await axios.post(backendUrl + '/api/order/list', {}, { headers: { token } })
+      const response = await http.post(backendUrl + '/api/order/list', {}, { headers: { token } })
       if (response.data.success) {
         let allOrdersItem = []
         setTrackingId(Array(parseInt(response.data.orders?.length)).fill({}).map((_, index)=> ({
@@ -90,7 +90,7 @@ const Orders = ({ token }) => {
 
   const statusHandler = async ( event, orderId ) => {
     try {
-      const response = await axios.post(backendUrl + '/api/order/status' , {orderId, status:event.target.value}, { headers: {token}})
+      const response = await http.post(backendUrl + '/api/order/status' , {orderId, status:event.target.value}, { headers: {token}})
       if (response.data.success) {
         await fetchAllOrders()
       }
@@ -185,6 +185,7 @@ const Orders = ({ token }) => {
                   <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p>
                 </div>
                 <p>{order.address.phone}</p>
+                <p>{order.address.email}</p>
               </div>
               <div>
                 <p className='text-sm sm:text-[15px]'>Items : {order?.items?.length}</p>

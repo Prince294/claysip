@@ -1,9 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import axios from 'axios'
 import { backendUrl, currency } from '../App'
-import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
 import { useLocation } from "react-router-dom";
 
