@@ -2,10 +2,11 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
+const URL = import.meta.env.VITE_BACKEND_URL;
 const http = axios?.create();
 
 http.interceptors.request.use(config => {
-    if (config.data) {
+    if (config.url !== URL + "/api/product/add" && config.url !== URL + "/api/product/update" && config.data) {
         const data = encryptData(config.data);
         config.data = { encryptedData: data }
     }

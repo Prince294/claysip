@@ -18,6 +18,10 @@ export const decryptData = (encryptedData) => {
 };
 
 export const decryptMiddleware = (req, res, next) => {
+    if (req.path === "/api/product/add" || req.path === "/api/product/update") {
+        return next();
+    }
+
     if (Object.keys(req.body).length !== 0 && req.body.encryptedData) {
         req.body = decryptData(req.body.encryptedData);
         if (!req.body) {

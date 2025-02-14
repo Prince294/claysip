@@ -10,10 +10,10 @@ const addProduct = async (req, res) => {
 
         const { name, description, price, weight, category, no_of_product_types, product_type_data, bestseller, full_description } = req.body
 
-        const image1 = req.files.image1 && req.files.image1[0]
-        const image2 = req.files.image2 && req.files.image2[0]
-        const image3 = req.files.image3 && req.files.image3[0]
-        const image4 = req.files.image4 && req.files.image4[0]
+        const image1 = req.files?.image1 && req.files?.image1[0]
+        const image2 = req.files?.image2 && req.files?.image2[0]
+        const image3 = req.files?.image3 && req.files?.image3[0]
+        const image4 = req.files?.image4 && req.files?.image4[0]
 
         const images = [image1, image2, image3, image4].filter((item) => item !== undefined)
 
@@ -102,10 +102,10 @@ const updateProduct = async (req, res) => {
 
         let parseImages = JSON.parse(images);
 
-        const image1 = req.files.image1 && req.files.image1[0]
-        const image2 = req.files.image2 && req.files.image2[0]
-        const image3 = req.files.image3 && req.files.image3[0]
-        const image4 = req.files.image4 && req.files.image4[0]
+        const image1 = req.files?.image1 && req.files?.image1[0]
+        const image2 = req.files?.image2 && req.files?.image2[0]
+        const image3 = req.files?.image3 && req.files?.image3[0]
+        const image4 = req.files?.image4 && req.files?.image4[0]
 
         const filterImages = [image1, image2, image3, image4];
 

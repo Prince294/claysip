@@ -26,13 +26,28 @@ const Edit = ({token}) => {
   const [category, setCategory] = useState("Glasses");
   const [bestseller, setBestseller] = useState(false);
 
-  const [productTypes, setProductTypes] = useState("0");
+  const [productTypes, setProductTypes] = useState(false);
+  const [productTypesUpdate, setProductTypesUpdate] = useState(0);
   const [productTypeData, setProductTypeData] = useState([]);
 
+  useEffect(() => {
+    if(productTypesUpdate != 0){
+      setProductTypeData(Array(parseInt(productTypes)).fill({}).map((_, index)=> ({
+          index: index + 1,
+          size_available: false, 
+          sizes: [], 
+          image1: "",
+          image2: "",
+          image3: "",
+          image4: "",
+          price: "",
+        })
+      ));
+    }
+  }, [productTypesUpdate])
 
   useEffect(() => {
     if(data){
-      console.log(data)
       let productTypeDataa = [];
       data.product_type_data.forEach((productTypeD, index)=>{
         let newImages = {}; 
@@ -223,7 +238,10 @@ const Edit = ({token}) => {
         <div>
           <div className='flex-row gap-3'>
             <p className='mb-2'>Number of Product Types</p>
-            <select onChange={(e) => setProductTypes(e.target.value)} value={productTypes} className='w-full px-3 py-2'>
+            <select onChange={(e) => {
+                setProductTypes(e.target.value);
+                setProductTypesUpdate(prev=> prev+1);
+              }} value={productTypes} className='w-full px-3 py-2'>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
