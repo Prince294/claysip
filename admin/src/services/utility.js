@@ -6,7 +6,7 @@ const URL = import.meta.env.VITE_BACKEND_URL;
 const http = axios?.create();
 
 http.interceptors.request.use(config => {
-    if (config.url !== URL + "/api/product/add" && config.url !== URL + "/api/product/update" && config.data) {
+    if (config.url !== URL + "/api/product/add" && config.url !== URL + "/api/product/update" && config.url !== URL + "/api/banner/add" && config.data) {
         const data = encryptData(config.data);
         config.data = { encryptedData: data }
     }

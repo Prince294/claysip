@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
 import { NavLink } from 'react-router-dom';
-
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -12,8 +10,34 @@ import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css/autoplay';
 import { Autoplay } from 'swiper/modules';
+import { toast } from 'react-toastify'
+import http from '../../../admin/src/services/utility';
+import { backendUrl } from '../../../admin/src/App';
 
 const Hero = () => {
+  const [list, setList] = useState([])
+
+  useEffect(() => {
+    fetchList()
+  }, [])
+
+  const fetchList = async () => {
+    try {
+
+      const response = await http.get(backendUrl + '/api/banner/list')
+      if (response.data.success) {
+        setList(response.data.banners);
+      }
+      else {
+        toast.error(response.data.message)
+      }
+
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
+
   return (
 
     <div className='bg-white overflow-hidden w-full'>
@@ -30,10 +54,7 @@ const Hero = () => {
         loop={true}
         className="mySwiper"
       >
-       { [1].map((index)=>{
-          return(
-
-        <SwiperSlide key={index}>
+        <SwiperSlide>
           <div  className='flex flex-col sm:flex-row w-full justify-center'>
             {/* Hero Left Side */}
             <div className='order-1 sm:order-0 w-full sm:w-1/2 flex items-center justify-center py-10 sm:py-0'>
@@ -46,20 +67,22 @@ const Hero = () => {
               </div>
             </div>
             {/* Hero Right Side */}
-            <img className='order-1 max-h-[450px] object-cover' src={assets.hero_pot1} alt="" />
+            <img className='order-1 max-h-[470px] object-cover px-16' src={assets.hero_pot1} alt="" />
           </div>
         </SwiperSlide>
+
+        {list.map((data,index)=>{
+          return(
+            <SwiperSlide key={index}>
+              <NavLink to='/collection' className='flex flex-col sm:flex-row w-full justify-center' title="Latest Arrivals">
+                <img className='w-[95%] max-h-[480px] object-cover' src={data.image} alt="" />
+              </NavLink>
+            </SwiperSlide>
          )
         })}
-
-
       </Swiper>
 
-
-
-
     </div>
-
   )
 }
 

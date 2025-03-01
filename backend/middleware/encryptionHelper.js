@@ -18,7 +18,7 @@ export const decryptData = (encryptedData) => {
 };
 
 export const decryptMiddleware = (req, res, next) => {
-    if (req.path === "/api/product/add" || req.path === "/api/product/update") {
+    if (req.path === "/api/product/add" || req.path === "/api/product/update" || req.path === "/api/banner/add") {
         return next();
     }
 
