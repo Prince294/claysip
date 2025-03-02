@@ -256,7 +256,7 @@ const filterCategory = async (req, res) => {
             }
         ]);
 
-        res.json({success:true,categories: result[0]['categories'], subCategories: result[0]['subCategories']})
+        res.json({success:true,categories: result[0]?.categories, subCategories: result[0]?.subCategories})
 
     } catch (error) {
         console.log(error)
