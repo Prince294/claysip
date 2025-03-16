@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 const Sidebar = () => {
-  const { getCartAmount, cartItems, products, currency, updateQuantity, sidebar, toggleSidebar, token, deliveryPinCode, checkPinCode } = useContext(ShopContext);
+  const { getCartAmount, cartItems, products, currency, updateQuantity, sidebar, toggleSidebar, token, deliveryPinCode, checkPinCode, getCartCount } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
   const [pinCode, setPinCode] = useState("");
@@ -128,10 +128,14 @@ const Sidebar = () => {
         <button className='rounded-lg bg-black text-white px-8 py-2 text-sm hover:bg-primary uppercase' onClick={handlePinCode}>Check</button>
       </div>
 
-      <Link to={!pinCodeVerify ? "#" : token ? '/cart' : '/login'}>
+      <Link to={!pinCodeVerify || getCartCount() == 0 ? "#" : token ? '/cart' : '/login'}>
         <button className={`rounded-sm w-full bg-black text-white px-8 py-3 text-sm hover:bg-primary uppercase ${!pinCodeVerify ? "bg-gray-400 hover:bg-gray-400 cursor-default" : ""}`} onClick={() => {
             if(pinCodeVerify) {
-              toggleSidebar(false)
+              if(getCartCount() == 0){
+                toast.error("No Item in the cart")
+              } else {
+                toggleSidebar(false)
+              }
             } else {
               toast.error("Invalid Pin Code");
             }

@@ -149,7 +149,7 @@ const PlaceOrder = () => {
                             <input required onChange={onChangeHandler} name='firstName' value={formData.firstName} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='First name' />
                             <input required onChange={onChangeHandler} name='lastName' value={formData.lastName} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Last name' />
                         </div>
-                        <input required onChange={onChangeHandler} name='email' value={formData.email} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="email" placeholder='Email address' />
+                        <input required onChange={onChangeHandler} name='email' value={formData?.email} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="email" placeholder='Email address' />
                         <input required onChange={onChangeHandler} name='street' value={formData.street} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Street' />
                         <div className='flex flex-col md:flex-row gap-3'>
                             <input required onChange={onChangeHandler} name='city' value={formData.city} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='City' />

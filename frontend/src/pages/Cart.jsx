@@ -3,10 +3,11 @@ import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
 
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate, getCartCount } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
 
@@ -98,7 +99,7 @@ const Cart = () => {
 
                         
                         
-                        <button onClick={() => updateQuantity(item._id, item.size, 0)} className='font-semibold delete top-2 rounded-full cursor-pointer p-4 bg-lightstone text-primary w-6 h-6 flex items-center justify-center'>
+                        <button onClick={() => updateQuantity(item._id, item.index, item.size, 0)} className='font-semibold delete top-2 rounded-full cursor-pointer p-4 bg-lightstone text-primary w-6 h-6 flex items-center justify-center'>
                             X
                         </button>
 
@@ -119,7 +120,13 @@ const Cart = () => {
             <div className='w-full cart-total'>
               <CartTotal />
               <div className=' w-full text-end'>
-                <button onClick={() => navigate('/place-order')} className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm mt-12 hover:bg-primary uppercase'>PROCEED TO CHECKOUT</button>
+                <button onClick={() => {
+                  if(getCartCount() > 0){
+                    navigate('/place-order');
+                  } else {
+                    toast.error("No Item in the cart")
+                  }
+                }} className='rounded-sm w-full bg-black text-white px-8 py-3 text-sm mt-12 hover:bg-primary uppercase'>PROCEED TO CHECKOUT</button>
               </div>
             </div>
           </div>

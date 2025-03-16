@@ -9,7 +9,7 @@ const Collection = () => {
   const location = useLocation();
   const data = location.state;
 
-  const { products, search, showSearch, filters } = useContext(ShopContext);
+  const { products, search, showSearch, filters, setIsLoading } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -27,20 +27,20 @@ const Collection = () => {
 
   }
 
-  const applyFilter = () => {
+  const applyFilter = async () => {
 
-    let productsCopy = products.slice();
+    let productsCopy = await products.slice();
 
     if (showSearch && search) {
-      productsCopy = productsCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+      productsCopy = await productsCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
     }
 
     if (category.length > 0) {
-      productsCopy = productsCopy.filter(item => category.includes(item.category));
+      productsCopy = await productsCopy.filter(item => category.includes(item.category));
     }
 
     setFilterProducts(productsCopy)
-
+    setIsLoading(false)
   }
 
   const sortProduct = () => {
@@ -60,7 +60,6 @@ const Collection = () => {
         applyFilter();
         break;
     }
-
   }
 
   useEffect(() => {
@@ -68,6 +67,7 @@ const Collection = () => {
   }, [])
 
   useEffect(() => {
+    setIsLoading(true)
     applyFilter();
   }, [category, search, showSearch, products])
 
