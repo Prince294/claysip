@@ -20,7 +20,7 @@ const PlaceOrder = () => {
         city: '',
         state: '',
         zipcode: '',
-        country: '',
+        country: 'India',
         phone: ''
     })
 
@@ -56,6 +56,12 @@ const PlaceOrder = () => {
                     setIsLoading(false);
                     console.log(error)
                     toast.error(error)
+                }
+            },
+            modal: {
+                ondismiss: () => {
+                    setIsLoading(false);
+                    toast.error("Payment was cancelled by the user.");
                 }
             }
         }
@@ -146,20 +152,20 @@ const PlaceOrder = () => {
                             <Title text1={'delivery'} text2={'information'} />
                         </div>
                         <div className='flex flex-col md:flex-row gap-3'>
-                            <input required onChange={onChangeHandler} name='firstName' value={formData.firstName} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='First name' />
-                            <input required onChange={onChangeHandler} name='lastName' value={formData.lastName} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Last name' />
+                            <input required onChange={onChangeHandler} name='firstName' value={formData.firstName} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='First name' autoComplete='off' />
+                            <input required onChange={onChangeHandler} name='lastName' value={formData.lastName} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Last name' autoComplete='off' />
                         </div>
-                        <input required onChange={onChangeHandler} name='email' value={formData?.email} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="email" placeholder='Email address' />
-                        <input required onChange={onChangeHandler} name='street' value={formData.street} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Street' />
+                        <input required onChange={onChangeHandler} name='email' value={formData?.email} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="email" placeholder='Email address' autoComplete='off' />
+                        <input required onChange={onChangeHandler} name='street' value={formData.street} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Street' autoComplete='off' />
                         <div className='flex flex-col md:flex-row gap-3'>
-                            <input required onChange={onChangeHandler} name='city' value={formData.city} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='City' />
-                            <input onChange={onChangeHandler} name='state' value={formData.state} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='State' />
+                            <input required onChange={onChangeHandler} name='city' value={formData.city} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='City' autoComplete='off' />
+                            <input onChange={onChangeHandler} name='state' value={formData.state} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='State' autoComplete='off' />
                         </div>
                         <div className='flex flex-col md:flex-row gap-3'>
-                            <input required onChange={onChangeHandler} name='zipcode' value={formData.zipcode} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="number" placeholder='Zipcode' />
-                            <input required onChange={onChangeHandler} name='country' value={formData.country} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="text" placeholder='Country' />
+                            <input required onChange={onChangeHandler} name='zipcode' value={formData.zipcode} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="number" placeholder='Zipcode' autoComplete='off' />
+                            <input required onChange={onChangeHandler} name='country' value={formData.country} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm bg-neutral-200' type="text" placeholder='Country' autoComplete='off' disabled />
                         </div>
-                        <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="number" placeholder='Phone' />
+                        <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='w-full border-1 border-primary focus:ring-primary focus:border-primary rounded-1 text-base px-2 rounded-sm' type="number" placeholder='Phone' autoComplete='off' />
                     </div>
 
                     <CartTotal type={method} />

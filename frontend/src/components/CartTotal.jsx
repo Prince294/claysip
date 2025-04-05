@@ -19,7 +19,7 @@ const CartTotal = ({type}) => {
           <p>{currency} {getCartAmount()?.toFixed(2)}</p>
         </div>
         <hr />
-        {type == "cod" ? <><div className='flex justify-between'>
+        {/* {type == "cod" ? <><div className='flex justify-between'>
           <p>Shipping Fee</p>
           <p>{currency} {(delivery_fee - cod_charge)?.toFixed(2)}</p>
         </div>
@@ -34,7 +34,12 @@ const CartTotal = ({type}) => {
           <p>Shipping Fee</p>
           <p>{currency} {delivery_fee}</p>
         </div>
-      }
+      } */}
+        <div className='flex justify-between'>
+          <p>Shipping Fee</p>
+          <p>{currency} {delivery_fee}</p>
+        </div>
+      
         <hr />
         <div className='flex justify-between font-semibold text-bse text-primary capitalize'>
           <p>Total</p>
