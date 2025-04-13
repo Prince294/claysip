@@ -141,7 +141,7 @@ const Collection = () => {
           <div className='flex-1 mt-6'>
 
             <div className="mb-4">
-              <Title text1={specificCat ? data?.data : 'all'} text2={'collections'} />
+              <Title text1={specificCat ? data?.data : 'all'} text2={'products'} />
             </div>
 
             {/* Map Products */}

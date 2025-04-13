@@ -261,7 +261,7 @@ const ShopContextProvider = (props) => {
         try {
 
             const response = await http.get(backendUrl + '/api/product/filter-category')
-            if (response.data.success) {
+            if (response.data?.success) {
                 setFilters(response.data)
             } else {
                 toast.error(response.data.message)
